@@ -5,7 +5,7 @@ Buff.__index = Buff
 
 Buff.icon = "Sprites/SpriteAssets/Icon/buff_taunt"
 Buff.priority = 0
-Buff.round = 2
+Buff.round = 1
 
 function Buff:OnAdd()
     self.owner:AddSpState("taunt")

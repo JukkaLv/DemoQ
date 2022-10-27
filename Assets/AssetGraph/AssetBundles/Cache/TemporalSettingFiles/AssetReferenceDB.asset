@@ -13,32 +13,380 @@ MonoBehaviour:
   m_Name: AssetReferenceDB
   m_EditorClassIdentifier: 
   m_assets:
-  - m_assetDatabaseId: ef13433e11c27424cb66ceefd8be39f0
-    m_importFrom: Assets/Demo/Resources/UI/targetmark.prefab
+  - m_assetDatabaseId: e75f23833edc6ec4ba14e256fb29eb66
+    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/1.png
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 41d53bdd4bbda0f41a6bd1eb35af4f99
+    m_importFrom: Assets/XLua/Src/ObjectTranslator.cs
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: c04bf0a96921887438116325ac20b142
+    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/8.png
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: e1ee480310b64754d9f7ef34fd26e8ba
+    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/6.png
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: b401ef029abdc7245958dc671789be50
+    m_importFrom: Assets/Demo/Resources/UI/UI_Battle.prefab
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: e4f00903afac8854f9eb62b7671c9c76
+    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/2.png
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 734a4b2457cae924d9634e46bab9c97b
+    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/5.png
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: f02631f52d055954cb2dc8ec96f6a42b
+    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/4.png
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 00ade5c307868c045855a57f9c5222c9
+    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/3.png
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 28398aefe84eb4f4f8bcb8fd5303ae22
+    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/7.png
     m_exportTo: 
     m_variantName: 
   - m_assetDatabaseId: a57c30f7663a4c748a4b286a771812d4
     m_importFrom: Assets/AssetGraph/AssetBundles/Cache/TemporalSettingFiles/AssetReferenceDB.asset
     m_exportTo: 
     m_variantName: 
-  - m_assetDatabaseId: 36ea20ddd87c93d49b0eb881033c6cc4
-    m_importFrom: Assets/Demo/Resources/Sprites/Image/UI/link.png
+  - m_assetDatabaseId: 0000000000000000a100000000000000
+    m_importFrom: ProjectSettings/UnityConnectSettings.asset
     m_exportTo: 
     m_variantName: 
-  - m_assetDatabaseId: 1b549775076a8d344bed1755e9167761
-    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/buff_taunt.png
+  - m_assetDatabaseId: c67ae5de6bdc84049bb0e2d5967d4438
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateStart.lua
     m_exportTo: 
     m_variantName: 
-  - m_assetDatabaseId: 80d0b29b0027bfe4abdaa2638b77923e
-    m_importFrom: Assets/Demo/Resources/Sprites/SpriteAssets/Icon/buff_ATField.png
+  - m_assetDatabaseId: 7481fd856e4ab4144bfc61211b414cab
+    m_importFrom: Assets/StreamingAssets/Lua/utils
     m_exportTo: 
     m_variantName: 
-  - m_assetDatabaseId: b6ce1c2ce4e561f44ad99a8afff81f75
-    m_importFrom: Assets/Demo/Resources/UI/bufflayout.prefab
+  - m_assetDatabaseId: d1012419e6674b94b8031d794700d9fb
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions
     m_exportTo: 
     m_variantName: 
-  - m_assetDatabaseId: b6ce1c2ce4e561f44ad99a8afff81f75
-    m_importFrom: Assets/Demo/Resources/UI/bufflayout.prefab
+  - m_assetDatabaseId: 810d81506479b7240a8172b73c08b8f0
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Advanture.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 501e67e85b26b174398ff8320904ce32
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/AdvantureStateLineUp.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 609e7d4af5fbfbf4f9032deb41a77aa9
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Buffs/demo_fighter_taunt.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 1cc1cb45bb06b06468330af87b6bc873
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/ActorStateDying.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 65cd06bb83331224bb3d2130febfd37f
+    m_importFrom: Assets/StreamingAssets/Lua/Framework/ObjectPool.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 7b0dc12cdaeea0c44b9d0aabe97c9859
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateEnterActor.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: eadb6e316be2df04d9ae289c6319bb8f
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateExitRound.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: c5cc54e0a21eaa04285689b9c15e341c
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/AdvantureStateWalk.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: f06108dab434ad042af3d51e9e63406b
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/ActorStateHit.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 323f7f2449541a847ade2cd8a96face4
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/AdvantureStateSuprise.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: fab86d4c4fdc3134db9c7c5a20c2fee0
+    m_importFrom: Assets/StreamingAssets/Lua/Configs/Actors.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: cd92a6a0d1d28f74693d409cc08b7422
+    m_importFrom: Assets/StreamingAssets/Lua/utils/CommonUtils.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 616e74d41db972146a5d222417905c39
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10302.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: cb37c1c1345b69e489858c278f96a672
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Renderer/ActorRenderer.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 1c4f622c803960748bf7b3094406bfe2
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/ActorStateRun.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: ecc12a77da90c0143a24e5d63661cd49
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: ba44a0062b2e9b2409fa7906fb92eee0
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Action.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: a85e3cce0562b5b4d87aeb6632f36256
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Events/EventCreateActor.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: c8765f4d500715e4f875ced1b755a78d
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/ActorStateDead.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 1aa8ff4775208084eb639beab2723e12
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateUserInput.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 5e843294873ced648b8b7740a8bdcb7f
+    m_importFrom: Assets/StreamingAssets/Lua/Configs/ConfigCenter.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: ca4f1ea5864f4424d8f41973ea2148e9
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/State
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 8e73242041a103a4caa427738e053e92
+    m_importFrom: Assets/StreamingAssets/Lua/Framework/Timer.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 499f655ae1cef074896b9f9702b1c079
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/ActorStateWalk.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: fc05ce6bbd2e3104a9debc4f0e0a2c46
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Buffs/demo_spawn_monster.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: d0bb4a9bbea829b449ae6bd46e270e81
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateActorAI.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: db82a1214c27a9f438ec3a1dd06c61ce
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10402.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 55f8133c59d9d2343a2df3be0f99946c
+    m_importFrom: Assets/StreamingAssets/Lua/Configs
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 2487cc0a28f4ab947b321fab46552710
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Events/EventDoHeal.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 1045269de22c6f3478b15907a3f7275d
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/AdvantureStateEncounter.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: ad5f6730584d0064d804f94f87148d00
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Battle.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 5928e237a9bfc2d47bf63744ca5b7df4
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10301.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 42c1b445e1831444fa1a034e6c72df0c
+    m_importFrom: Assets/StreamingAssets/Lua/utils/serpent.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 6fd8f16bbb64c294ea006173516e420d
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/enter20102.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 546972d5323efd6429978a9376048675
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Events/EventDoDamage.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 1de075e03ccdfde45b4d85c245e66c99
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateDoRound.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: e4cbc6122037efe48a6216d695092244
+    m_importFrom: Assets/StreamingAssets/Lua/Framework/FSMachine.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 46498e3510dbd7c449729a253726d2a4
+    m_importFrom: Assets/StreamingAssets/Lua/Framework/Notifier.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: ef78e530f1d9dfb47b95d786e385e093
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actor.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 28edd2927872f7c47b6a93f1178889d7
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Buffs
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: e6dab291f19609a4886916bbc5198542
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateExitActor.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 0012c3d8f3c6d5744a08ffb2db025a2b
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10202.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 94d10b18631a8d840b5f4ed30fcc9098
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10101.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 80010b3684753d344822ae8d976b5a42
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateEnterRound.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 620bbd0cea272bd4a923f638e6dff02b
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Wave
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 18b34d78763e56348986e8641371922c
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10201.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 37f25c8656ceec643a6f652ff8e38bd9
+    m_importFrom: Assets/StreamingAssets/Lua/Configs/Skills.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 55a91973cbdfe404e9416cc79e8ca976
+    m_importFrom: Assets/StreamingAssets/Lua/UnityDefines.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 8b391633b8bb74d40b025e09d3a2a615
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/AdvantureStateStart.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 1feb70205f9ac1c4a9ffd37d87465bb1
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Events/EventPlayAnim.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: cc4ddaca7324f66458c2f83ab469ad8e
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Events/EventKillActors.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 219852f763d12de4597298e4f6092841
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Buffs/demo_player_ATField.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: b4fbe8f0ec1a650429d77e0cb935084b
+    m_importFrom: Assets/StreamingAssets/Lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 2c6e8a67b0f492d4d8a44b6477773c97
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Buffs/Buff.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 1471f4843b42d5247a42983572035a90
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10501.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 3a5afc91e340ff64aa06e35d9e331bfb
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: f7435998259366b42a1af3178e300c5a
+    m_importFrom: Assets/StreamingAssets
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: d63f6c5e4ee45ad4294eb0bf24789962
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateEnd.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: a277690e23e038647adee98933beab39
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/AdvantureGlobalDefines.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: f3469946698e22544b78cac89f302e9a
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10401.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 54ce228b57ca46f4d8c874c3e3fb1233
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateDoActor.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 45aec950be2aee445aa7a632eadbd6ce
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/ActorStateAction.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 35a2c18d1618f344ebb70ccc8cec673a
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/ActorStateIdle.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: d8cd0349ffe46224b84488d4c8b0ac62
+    m_importFrom: Assets/StreamingAssets/Lua/UI/BattleUI.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: b1b73c189fb00c040a59b19fa9fb92d3
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast20102.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 74dd6738d23d67e4fb1ab4bb6a0d5571
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Events/EventAddBuff.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: c959d06fd080b3e43b9853e7fd385b29
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Events/EventBase.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: f6d784ce83dbfcd48b26be7bcf9f867d
+    m_importFrom: Assets/StreamingAssets/Lua/DemoMain.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 33ccb3ff6afb07c40a93e219fd8faba0
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/simple_spawn_actor.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: d30725fccfce7174a91e9e33541be85a
+    m_importFrom: Assets/StreamingAssets/Lua/Gameplay
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: cc42ed4d3c01a04489c94cbf8d0276a3
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10502.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 3e8b86ad21e15e04c91bd489544315d6
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast20101.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 5d30936995d5cb148a67aa08bf033acc
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/Events
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 9e7d27acdf9426743890944db698392b
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Renderer
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 06916885e7041bd4ea8e9636d3078979
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast20201.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 882d38e9018d71e4297c20e601eedda2
+    m_importFrom: Assets/StreamingAssets/Lua/Framework
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 9a59c9aa7fea768448aa2b7e786b7bbe
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Wave.lua
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: 7e893a2900de0454ba5b18240b364f4e
+    m_importFrom: Assets/StreamingAssets/Lua/UI
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: c4fb2ffe8ce427d4fb1f385d80866785
+    m_importFrom: Assets/StreamingAssets/UnityServicesProjectConfiguration.json
     m_exportTo: 
     m_variantName: 
   m_version: 2
