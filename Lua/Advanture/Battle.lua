@@ -28,7 +28,7 @@ function Battle:Init(context, advanture)
     self.currActionActorIdx = 1  -- 当前回合的待行动角色索引
     ------------------------------------------------
 
-    require('UI.BattleUI').Create() -- Demo先不接UI系统了，放在这里但是不要直接调用里面方法，还是通过消息通信
+    self.ui = require('UI.BattleUI').Create() -- Demo先不接UI系统了，放在这里但是不要直接调用里面方法，还是通过消息通信
 
     self.fsm = require('Framework.FSMachine').Create(self)
     self.fsm:Add("START", require('Advanture.States.BattleStateStart').Create())
@@ -46,6 +46,8 @@ function Battle:Init(context, advanture)
 end
 
 function Battle:Dispose()
+    self.ui:Dispose()
+    self.ui = nil
     self.grids = nil
     self.fsm:Dispose()
     self.fsm = nil
