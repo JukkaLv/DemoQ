@@ -28,13 +28,18 @@ function BattleUI:Init()
     end
     self.btn_skip = self.obj_bottom.transform:Find("btn_skip"):GetComponent("Button")
     self.btn_skip.onClick:AddListener(function() Notifier.Dispatch("_Battle_UI_Click_Skip") end)
+    self.btn_confirm = self.obj_bottom.transform:Find("btn_confirm"):GetComponent("Button")
+    self.btn_confirm.onClick:AddListener(function() Notifier.Dispatch("_Battle_UI_Click_Confirm") end)
+    self.btn_cancel = self.obj_bottom.transform:Find("btn_cancel"):GetComponent("Button")
+    self.btn_cancel.onClick:AddListener(function() Notifier.Dispatch("_Battle_UI_Click_Cancel") end)
     self.rootGO:SetActive(false)
 
     Notifier.AddListener("_Battle_Start", self.Show, self)
     Notifier.AddListener("_Battle_End", self.Hide, self)
     Notifier.AddListener("_Battle_New_Round", self.AnimRound, self)
     Notifier.AddListener("_Battle_Actor_Input", self.ShowActorSkills, self)
-    Notifier.AddListener("_Battle_Skill_Selected", self.ShowChosenSkillAffects, self)
+    Notifier.AddListener("_Battle_Skill_Selected", self.OnSelectSkill, self)
+    Notifier.AddListener("_Battle_Target_Selected", self.OnSelectTarget, self)
     Notifier.AddListener("_Battle_Actor_Input_Done", self.HideActorSkills, self)
     Notifier.AddListener("_Battle_Action_Sort", self.RefreshActionSort, self)
 end
@@ -44,7 +49,8 @@ function BattleUI:Dispose()
     Notifier.RemoveListener("_Battle_End", self.Hide, self)
     Notifier.RemoveListener("_Battle_New_Round", self.AnimRound, self)
     Notifier.RemoveListener("_Battle_Actor_Input", self.ShowActorSkills, self)
-    Notifier.RemoveListener("_Battle_Skill_Selected", self.ShowChosenSkillAffects, self)
+    Notifier.RemoveListener("_Battle_Skill_Selected", self.OnSelectSkill, self)
+    Notifier.RemoveListener("_Battle_Target_Selected", self.OnSelectTarget, self)
     Notifier.RemoveListener("_Battle_Actor_Input_Done", self.HideActorSkills, self)
     Notifier.RemoveListener("_Battle_Action_Sort", self.RefreshActionSort, self)
 
@@ -86,17 +92,26 @@ function BattleUI:ShowActorSkills(actor)
             item_skill.obj_selected:SetActive(false)
         end
     end
+    self.btn_confirm.gameObject:SetActive(false)
+    self.btn_cancel.gameObject:SetActive(false)
 end
 
 function BattleUI:HideActorSkills()
     self.obj_bottom:SetActive(false)
 end
 
-function BattleUI:ShowChosenSkillAffects(skillIdx)
+function BattleUI:OnSelectSkill(skillIdx)
     for i=1,4 do
         local item_skill = self.list_skill[i]
         item_skill.obj_selected:SetActive(i == skillIdx)
     end
+    self.btn_confirm.gameObject:SetActive(false)
+    self.btn_cancel.gameObject:SetActive(false)
+end
+
+function BattleUI:OnSelectTarget()
+    self.btn_confirm.gameObject:SetActive(true)
+    self.btn_cancel.gameObject:SetActive(true)
 end
 
 function BattleUI:RefreshActionSort(sortedActionActors , Idx)

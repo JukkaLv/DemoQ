@@ -179,11 +179,30 @@ function GetAllPlansForCastSkill(caster, skill)
 end
 
 -- 基于角色寻找相邻的人
-function FindNearbyActor(baseActor, coordOffset)
+function FindNearbyActor(baseActor, coordOffset, excludeSelf, needSameCamp)
     local standCoords = GetActorStandingCoords(baseActor)
     -- 先不考虑大体型
     local baseCoord = standCoords[1]
-    return battleInst.grids[baseCoord + coordOffset]
+    local actor = battleInst.grids[baseCoord + coordOffset]
+    if actor ~= nil then
+        if needSameCamp and actor.context.camp ~= baseActor.context.camp then return nil end
+        if excludeSelf and actor == baseActor then return nil end 
+        return actor
+    end
+    return nil
+end
+
+-- 根据选定目标和技能，选出最终效果覆盖目标
+function FindSkillAffectTargets(baseTarget, skill)
+    local targets = {baseTarget}
+    if skill.cfgTbl.affectRange == 1 then return targets end
+    for i=1,skill.cfgTbl.affectRange-1 do        
+        local targetLeft = FindNearbyActor(baseTarget, -i, true, true)
+        local targetRight = FindNearbyActor(baseTarget, i, true, true)
+        if targetLeft ~= nil then table.insert(targets, targetLeft) end
+        if targetRight ~= nil then table.insert(targets, targetRight) end
+    end
+    return targets
 end
 ---------------------------------------------------------
 
@@ -213,11 +232,11 @@ function DrawBezierCurve(resName, startPosition, endPosition)
     bezierRenderer:DrawQuadraticCurve(20, startPosition, ctrlPosition, endPosition)
     return gameObject
 end
-function DrawTargetMark(target, skill)
+function DrawTargetMark(target, color)
     local position = target:GetPosition() + Vector3(0, -0.5, 0)
     local gameObject = GameObject.Instantiate(Resources.Load("UI/targetmark"), position, Quaternion.identity, WORLD_CANVAS)
-    gameObject.transform:Find('img_mark').gameObject:GetComponent("Image").color = skill.cfgTbl.campFilter == 2 and Color.red or Color.green
-    gameObject.transform:Find('img_chain').gameObject:SetActive(skill.cfgTbl.isAOE)
+    gameObject.transform:Find('img_mark').gameObject:GetComponent("Image").color = color
+    gameObject.transform:Find('img_chain').gameObject:SetActive(true)
     local sizeDelta = gameObject.transform.sizeDelta
     sizeDelta.x = sizeDelta.x * target.context.cfgTbl.size
     gameObject.transform.sizeDelta = sizeDelta
