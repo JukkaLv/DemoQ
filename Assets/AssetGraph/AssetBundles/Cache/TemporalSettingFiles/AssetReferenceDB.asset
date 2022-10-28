@@ -249,10 +249,6 @@ MonoBehaviour:
     m_importFrom: Assets/StreamingAssets/Lua/Advanture/States/BattleStateEnterRound.lua
     m_exportTo: 
     m_variantName: 
-  - m_assetDatabaseId: 620bbd0cea272bd4a923f638e6dff02b
-    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Wave
-    m_exportTo: 
-    m_variantName: 
   - m_assetDatabaseId: 18b34d78763e56348986e8641371922c
     m_importFrom: Assets/StreamingAssets/Lua/Advanture/Actions/cast10201.lua
     m_exportTo: 
@@ -385,7 +381,11 @@ MonoBehaviour:
     m_importFrom: Assets/StreamingAssets/Lua/UI
     m_exportTo: 
     m_variantName: 
-  - m_assetDatabaseId: c4fb2ffe8ce427d4fb1f385d80866785
+  - m_assetDatabaseId: 620bbd0cea272bd4a923f638e6dff02b
+    m_importFrom: Assets/StreamingAssets/Lua/Advanture/Wave
+    m_exportTo: 
+    m_variantName: 
+  - m_assetDatabaseId: d2d3341948fd48b499c3158dc91f5266
     m_importFrom: Assets/StreamingAssets/UnityServicesProjectConfiguration.json
     m_exportTo: 
     m_variantName: 
