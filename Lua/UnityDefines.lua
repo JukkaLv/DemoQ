@@ -1,4 +1,5 @@
 GameObject = CS.UnityEngine.GameObject
+Object = CS.UnityEngine.Object
 Resources = CS.UnityEngine.Resources
 Vector3 = CS.UnityEngine.Vector3
 Vector2 = CS.UnityEngine.Vector2
