@@ -4,6 +4,7 @@ local ExploreUI = {}
 ExploreUI.__index = ExploreUI
 
 local SWITCH_MODEL = 1
+local GOLD_MODEL = 1
 local MAX_ENERGY = 40
 local INPUT_LOCK = false
 
@@ -38,6 +39,9 @@ function ExploreUI:Init()
     self:InitMap()
     self:RefreshEnergy()
 
+    GOLD_MODEL = 3
+    self:OnClickChangeGoldModel()
+
     self.playerGo.transform:SetAsLastSibling()
     require('Framework.Timer').Create(0.08, 1, 
     function ()
@@ -46,6 +50,7 @@ function ExploreUI:Init()
 
     GameObject.Find("ChangeModelBtn").transform:GetComponent("Button").onClick:AddListener(function () self:OnClickChangeModel() end)
     GameObject.Find("ResetBtn").transform:GetComponent("Button").onClick:AddListener(function () self:OnClickReset() end)
+    GameObject.Find("ChangeGoldBtn").transform:GetComponent("Button").onClick:AddListener(function () self:OnClickChangeGoldModel() end)
 end
 
 function ExploreUI:InitMap()
@@ -70,7 +75,7 @@ function ExploreUI:InitMap()
         end
         self.mapGo[index].transform:Find("Back").gameObject:SetActive(data ~= -1)
         self.mapGo[index].transform:Find("Button").gameObject:SetActive(data ~= -1)
-        self.mapGo[index].transform:Find("Mask").gameObject:SetActive(data ~= -1)
+        self.mapGo[index].transform:Find("BtnMask").gameObject:SetActive(data ~= -1)
         self.mapGo[index].transform:Find("Gold").gameObject:SetActive(false)
         self.mapGo[index].transform:Find("Reward").gameObject:SetActive(false)
         self.mapGo[index].transform:Find("Enemy").gameObject:SetActive(false)
@@ -107,7 +112,7 @@ function ExploreUI:RefreshMap()
     for _, index in ipairs(self.mapOpen) do
         local data = self.mapData[index]
         local item = self.mapGo[index]
-        item.transform:Find("Mask").gameObject:SetActive(false)
+        item.transform:Find("BtnMask").gameObject:SetActive(false)
         item.transform:Find("Opened").gameObject:SetActive(SWITCH_MODEL == 2)
         if data == 0 then
             item.transform:Find("Begin").gameObject:SetActive(true)
@@ -127,10 +132,10 @@ function ExploreUI:RefreshMap()
     for _, index in ipairs(self.mapCanOpen) do
         local item = self.mapGo[index]
         if SWITCH_MODEL == 1 then
-            item.transform:Find("Mask").gameObject:SetActive(false)
+            item.transform:Find("BtnMask").gameObject:SetActive(false)
         elseif SWITCH_MODEL == 2 then
             local data = self.mapData[index]
-            item.transform:Find("Mask").gameObject:SetActive(false)
+            item.transform:Find("BtnMask").gameObject:SetActive(false)
             if data == 0 then
                 item.transform:Find("Begin").gameObject:SetActive(true)
             elseif data == 1 then
@@ -146,13 +151,40 @@ function ExploreUI:RefreshMap()
             end
         end
     end
+
+    for index, go in ipairs(self.mapGo) do
+        go.transform:Find("ShowMask").gameObject:SetActive(true)
+    end
+
+    local nowAround = self:GetNowIndexAround()
+    for _, index in ipairs(nowAround) do
+        self.mapGo[index].transform:Find("ShowMask").gameObject:SetActive(false)
+    end
+    self.mapGo[self.nowIndex].transform:Find("ShowMask").gameObject:SetActive(false)
 end
 
 function ExploreUI:OpenCard(index)
     table.insert(self.mapOpen , index)
-    -- 可以翻开的卡牌
     self.mapCanOpen = self:GetMapCanOpen()
-    self:RefreshMap()    
+    self:PlayOpenCardAnim(index)
+end
+
+function ExploreUI:PlayOpenCardAnim(indexList)
+    local function anime(index)
+        self.mapGo[index].transform:DOLocalRotate(Vector3(0,-90,0) , 0.4)
+        require('Framework.Timer').Create(0.4, 1,function ()
+            self.mapGo[index].transform.localRotation = Quaternion(0,90,0,90)
+            self.mapGo[index].transform:DOLocalRotate(Vector3(0,0,0) , 0.4)
+            self:RefreshMap()
+        end, self):Play()
+    end
+    if type(indexList) == "number" then
+        anime(indexList)
+    else
+        for _, index in ipairs(indexList) do
+            anime(indexList)
+        end
+    end
 end
 
 function ExploreUI:GetMapCanOpen()
@@ -190,6 +222,46 @@ function ExploreUI:GetMapCanOpen()
     return canOpenCard
 end
 
+function ExploreUI:GetNowIndexAround()
+    local tmp = {}
+    if self.nowIndex % 7 == 1 then -- 左一列
+        table.insert(tmp , self.nowIndex + 1)
+        if self.nowIndex - 7 >= 1 then 
+            table.insert(tmp , self.nowIndex - 7) 
+            table.insert(tmp , self.nowIndex - 6) 
+        end
+        if self.nowIndex + 7 <= #self.mapData then 
+            table.insert(tmp , self.nowIndex + 7) 
+            table.insert(tmp , self.nowIndex + 8) 
+        end
+    elseif self.nowIndex % 7 == 0 then --右一列
+        table.insert(tmp , self.nowIndex - 1)
+        if self.nowIndex - 7 >= 1 then 
+            table.insert(tmp , self.nowIndex - 7) 
+            table.insert(tmp , self.nowIndex - 8) 
+        end
+        if self.nowIndex + 7 <= #self.mapData then 
+            table.insert(tmp , self.nowIndex + 7) 
+            table.insert(tmp , self.nowIndex + 6) 
+        end
+    else
+        table.insert(tmp , self.nowIndex + 1)
+        table.insert(tmp , self.nowIndex - 1)
+        if self.nowIndex - 7 >= 1 then 
+            table.insert(tmp , self.nowIndex - 7) 
+            table.insert(tmp , self.nowIndex - 8) 
+            table.insert(tmp , self.nowIndex - 6) 
+        end
+        if self.nowIndex + 7 <= #self.mapData then 
+            table.insert(tmp , self.nowIndex + 7) 
+            table.insert(tmp , self.nowIndex + 8) 
+            table.insert(tmp , self.nowIndex + 6) 
+        end
+    end
+
+    return tmp
+end
+
 function ExploreUI:OnClickCard(index)
     if INPUT_LOCK then return end
     self:SetInputLock(true)
@@ -206,6 +278,7 @@ function ExploreUI:OnClickCard(index)
             self.nowIndex = index
             self:Move(index)
             self:SetInputLock(false , 0.5)
+            self:RefreshMap()
         end
         return
     elseif SWITCH_MODEL == 2 then 
@@ -215,6 +288,7 @@ function ExploreUI:OnClickCard(index)
             self:Move(index)
             self.nowIndex = index
             self:SetInputLock(false , 0.5)
+            self:RefreshMap()
             return
         end
         if self:GetIndexIsCanOpen(index) then
@@ -247,7 +321,18 @@ function ExploreUI:PlayOpenAnime(index)
         elseif data == 1 then
             self:NextLayer()
         elseif data == 2 then
-            self:ShowHint("一些金币")
+            if GOLD_MODEL == 1 then
+                self:ShowHint("获得10金币")
+            elseif GOLD_MODEL == 2 then
+                local rand = math.random(1,100)
+                if rand > 50 then
+                    self:ShowHint("获得10金币")
+                end
+            elseif GOLD_MODEL == 3 then
+                local usedEnergy = MAX_ENERGY-self.energy
+                local gold = math.floor(10+10^(math.random(0,math.floor(usedEnergy/5*10))/10))
+                self:ShowHint("获得".. gold .."金币")
+            end
         elseif data == 3 then
             self:ShowHint("发现宝箱")
         elseif data == 4 then
@@ -289,6 +374,21 @@ end
 function ExploreUI:RefreshEnergy()
     self.energyText.text = "体力： ".. self.energy .."/" .. MAX_ENERGY
     self.energyImage.fillAmount = self.energy / MAX_ENERGY
+end
+
+function ExploreUI:OnClickChangeGoldModel()
+    local text = ""
+    if GOLD_MODEL == 1 then
+        GOLD_MODEL = 2
+        text = "金币50%"
+    elseif GOLD_MODEL == 2 then
+        GOLD_MODEL = 3
+        text = "金币递增"
+    elseif GOLD_MODEL == 3 then
+        GOLD_MODEL = 1
+        text = "金币固定"
+    end
+    GameObject.Find("ChangeGoldBtn").transform:Find("Text"):GetComponent("Text").text = text
 end
 
 function ExploreUI:OnClickChangeModel()
