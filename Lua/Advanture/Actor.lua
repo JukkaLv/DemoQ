@@ -138,7 +138,7 @@ function Actor:SetSortOrder(order)
 end
 -- 创建一个虚影
 function Actor:CreateShade(alpha, sortingOrder)
-    local shade = ActorRenderer.Create(self.id, self.context.cfgTbl.prefab)
+    local shade = ActorRenderer.Create(self.id, self.context.cfgTbl.prefab, self.context.cfgTbl.size)
     shade.spriteRenderer.color = Color(1, 1, 1, alpha)
     shade:SetSortOrder(sortingOrder)
     return shade
