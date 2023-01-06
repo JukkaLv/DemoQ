@@ -11,6 +11,7 @@ namespace Framework.LuaMVC.Editor
     public class LuaViewFacadeEditor : UnityEditor.Editor
     {
         private SerializedProperty viewNameProperty;
+        private SerializedProperty subViewProperty;
         private SerializedProperty compsProperty;
         private List<SerializedProperty> comps = new List<SerializedProperty>();
         private ReorderableList list;
@@ -18,6 +19,7 @@ namespace Framework.LuaMVC.Editor
         void OnEnable()
         {
             viewNameProperty = serializedObject.FindProperty("viewName");
+            subViewProperty = serializedObject.FindProperty("subView");
             compsProperty = serializedObject.FindProperty("comps");
             list = new ReorderableList(comps, typeof(LuaViewComponent));
             list.elementHeight = 68f;
@@ -32,8 +34,16 @@ namespace Framework.LuaMVC.Editor
         {
             serializedObject.Update();
 
+            LuaViewFacade facade = target as LuaViewFacade;
+            bool isTopFacade = facade.transform.parent == null;
+
             EditorGUILayout.PropertyField(viewNameProperty);
+            if (isTopFacade)
+            {
+                EditorGUILayout.PropertyField(subViewProperty);
+            }
             EditorGUILayout.Space();
+
             comps.Clear();
             for (int i = 0; i < compsProperty.arraySize; i++)
             {
@@ -44,8 +54,7 @@ namespace Framework.LuaMVC.Editor
 
             serializedObject.ApplyModifiedProperties();
 
-            LuaViewFacade facade = target as LuaViewFacade;
-            if (facade.transform.parent == null)
+            if (isTopFacade)
             {
                 if (GUILayout.Button("Generate Lua Script"))
                 {

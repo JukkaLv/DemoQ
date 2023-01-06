@@ -36,6 +36,13 @@ public static class LuaGenConfigs
         typeof(UnityEngine.SpriteRenderer),
         typeof(UnityEngine.Color),
 
+        // Framework
+        typeof(Framework.Asset.AssetManager),
+
+        // Luban
+        typeof(Bright.Serialization.ByteBuf),
+        typeof(Framework.Luban.LubanLoader),
+
         // DOTween
         typeof(DG.Tweening.AutoPlay),
         typeof(DG.Tweening.AxisConstraint),

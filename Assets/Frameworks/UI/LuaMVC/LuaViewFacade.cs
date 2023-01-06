@@ -8,6 +8,7 @@ namespace Framework.LuaMVC
     public class LuaViewFacade : MonoBehaviour
     {
         public string viewName;
+        public bool subView;
         public List<LuaViewComponent> comps = new List<LuaViewComponent>();
 
         public void SetComps(LuaTable viewTbl)
