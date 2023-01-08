@@ -88,7 +88,7 @@ namespace Framework.LuaMVC.Editor
             "Button",
             "Slider",
             "Scrollbar",
-            "ScrollRect",
+            "LayoutGroup",
         };
         private void OnDrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
         {

@@ -1,35 +1,48 @@
 -- 本脚本为自动生成，不要手动修改，以免被覆盖
 local Notifier = require 'Framework.Notifier'
-local SelectCharacterItemView = {}
-SelectCharacterItemView.__index = SelectCharacterItemView
-SelectCharacterItemView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/ItemView_SelectCharacter.prefab'
+local SelectHeroItemView = {}
+SelectHeroItemView.__index = SelectHeroItemView
+SelectHeroItemView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/ItemView_SelectHero.prefab'
 
-function SelectCharacterItemView.Create(facade)
+function SelectHeroItemView.Create(facade)
 	local copy = {}
-	setmetatable(copy, SelectCharacterItemView)
+	setmetatable(copy, SelectHeroItemView)
 	copy:Init(facade)
 	return copy
 end
 
-function SelectCharacterItemView:Init(facade)
-	assert(facade ~= nil, 'Error! SelectCharacterItemView facade is nil')
+function SelectHeroItemView:Init(facade)
+	assert(facade ~= nil, 'Error! SelectHeroItemView facade is nil')
 	facade:SetComps(self)
 	self.viewName = facade.viewName
 	self.gameObject = facade.gameObject
 	self.transform = facade.transform
 	self.btn_root_OnClick = nil
-	self.btn_root.onClick:AddListener(function() if self.btn_root_OnClick ~= nil then self.btn_root_OnClick() end end)
+	self.btn_root_OnClickNoti = nil
+	self.btn_root.onClick:AddListener(function()
+		if self.btn_root_OnClick ~= nil then self.btn_root_OnClick() end
+		if self.btn_root_OnClickNoti ~= nil and self.btn_root_OnClickNoti.name ~= nil then Notifier.Dispatch(self.btn_root_OnClickNoti.name, self.btn_root_OnClickNoti.body) end 
+	end)
 	self.btn_skill_1_OnClick = nil
-	self.btn_skill_1.onClick:AddListener(function() if self.btn_skill_1_OnClick ~= nil then self.btn_skill_1_OnClick() end end)
+	self.btn_skill_1_OnClickNoti = nil
+	self.btn_skill_1.onClick:AddListener(function()
+		if self.btn_skill_1_OnClick ~= nil then self.btn_skill_1_OnClick() end
+		if self.btn_skill_1_OnClickNoti ~= nil and self.btn_skill_1_OnClickNoti.name ~= nil then Notifier.Dispatch(self.btn_skill_1_OnClickNoti.name, self.btn_skill_1_OnClickNoti.body) end 
+	end)
 	self.btn_skill_2_OnClick = nil
-	self.btn_skill_2.onClick:AddListener(function() if self.btn_skill_2_OnClick ~= nil then self.btn_skill_2_OnClick() end end)
+	self.btn_skill_2_OnClickNoti = nil
+	self.btn_skill_2.onClick:AddListener(function()
+		if self.btn_skill_2_OnClick ~= nil then self.btn_skill_2_OnClick() end
+		if self.btn_skill_2_OnClickNoti ~= nil and self.btn_skill_2_OnClickNoti.name ~= nil then Notifier.Dispatch(self.btn_skill_2_OnClickNoti.name, self.btn_skill_2_OnClickNoti.body) end 
+	end)
 end
 
-function SelectCharacterItemView:Render(viewModel)
-	assert(viewModel ~= nil, 'Error! SelectCharacterItemView view model is nil')
+function SelectHeroItemView:Render(viewModel)
+	assert(viewModel ~= nil, 'Error! SelectHeroItemView view model is nil')
 	if viewModel.btn_root ~= nil then
 		if viewModel.btn_root.enabled ~= nil then self.btn_root.enabled = viewModel.btn_root.enabled end
 		if viewModel.btn_root.interactable ~= nil then self.btn_root.interactable = viewModel.btn_root.interactable end
+		if viewModel.btn_root.OnClickNoti ~= nil then self.btn_root_OnClickNoti = viewModel.btn_root.OnClickNoti end
 	end
 	if viewModel.txt_name ~= nil then
 		if viewModel.txt_name.enabled ~= nil then self.txt_name.enabled = viewModel.txt_name.enabled end
@@ -54,10 +67,12 @@ function SelectCharacterItemView:Render(viewModel)
 	if viewModel.btn_skill_1 ~= nil then
 		if viewModel.btn_skill_1.enabled ~= nil then self.btn_skill_1.enabled = viewModel.btn_skill_1.enabled end
 		if viewModel.btn_skill_1.interactable ~= nil then self.btn_skill_1.interactable = viewModel.btn_skill_1.interactable end
+		if viewModel.btn_skill_1.OnClickNoti ~= nil then self.btn_skill_1_OnClickNoti = viewModel.btn_skill_1.OnClickNoti end
 	end
 	if viewModel.btn_skill_2 ~= nil then
 		if viewModel.btn_skill_2.enabled ~= nil then self.btn_skill_2.enabled = viewModel.btn_skill_2.enabled end
 		if viewModel.btn_skill_2.interactable ~= nil then self.btn_skill_2.interactable = viewModel.btn_skill_2.interactable end
+		if viewModel.btn_skill_2.OnClickNoti ~= nil then self.btn_skill_2_OnClickNoti = viewModel.btn_skill_2.OnClickNoti end
 	end
 	if viewModel.txt_skill_1 ~= nil then
 		if viewModel.txt_skill_1.enabled ~= nil then self.txt_skill_1.enabled = viewModel.txt_skill_1.enabled end
@@ -71,4 +86,4 @@ function SelectCharacterItemView:Render(viewModel)
 	end
 end
 
-return SelectCharacterItemView
+return SelectHeroItemView

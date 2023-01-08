@@ -319,10 +319,15 @@ namespace Framework.LuaMVC.Editor
                         break;
                     case "Button":
                         initBuilder.Append("\t").AppendFormat("self.{0}_OnClick = nil", comp.name).AppendLine();
-                        initBuilder.Append("\t").AppendFormat("self.{0}.onClick:AddListener(function() if self.{0}_OnClick ~= nil then self.{0}_OnClick() end end)", comp.name).AppendLine();
+                        initBuilder.Append("\t").AppendFormat("self.{0}_OnClickNoti = nil", comp.name).AppendLine();
+                        initBuilder.Append("\t").AppendFormat("self.{0}.onClick:AddListener(function()", comp.name).AppendLine();
+                        initBuilder.Append("\t\t").AppendFormat("if self.{0}_OnClick ~= nil then self.{0}_OnClick() end", comp.name).AppendLine();
+                        initBuilder.Append("\t\t").AppendFormat("if self.{0}_OnClickNoti ~= nil and self.{0}_OnClickNoti.name ~= nil then Notifier.Dispatch(self.{0}_OnClickNoti.name, self.{0}_OnClickNoti.body) end ", comp.name).AppendLine();
+                        initBuilder.Append("\t").AppendLine("end)");
                         renderBuilder.Append("\t").AppendFormat("if viewModel.{0} ~= nil then", comp.name).AppendLine();
                         renderBuilder.Append("\t\t").AppendFormat("if viewModel.{0}.enabled ~= nil then self.{0}.enabled = viewModel.{0}.enabled end", comp.name).AppendLine();
                         renderBuilder.Append("\t\t").AppendFormat("if viewModel.{0}.interactable ~= nil then self.{0}.interactable = viewModel.{0}.interactable end", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t").AppendFormat("if viewModel.{0}.OnClickNoti ~= nil then self.{0}_OnClickNoti = viewModel.{0}.OnClickNoti end", comp.name).AppendLine();
                         renderBuilder.Append("\t").AppendLine("end");
                         break;
                     case "Slider":
@@ -343,17 +348,15 @@ namespace Framework.LuaMVC.Editor
                         renderBuilder.Append("\t\t").AppendFormat("if viewModel.{0}.value ~= nil then self.{0}.value = viewModel.{0}.value end", comp.name).AppendLine();
                         renderBuilder.Append("\t").AppendLine("end");
                         break;
-                    case "ScrollRect":
-                        initBuilder.Append("\t").AppendFormat("self.{0}_ItemTemplate = nil", comp.name).AppendLine(); // 滑动列表 项模板
-                        initBuilder.Append("\t").AppendFormat("self.__{0}_POOL = {1}", comp.name, "{}").AppendLine(); // 滑动列表 内部池
-                        initBuilder.Append("\t").AppendFormat("self.__{0}_CONTENT = self.{0}.transform:Find('Viewport/Content')", comp.name).AppendLine();
+                    case "LayoutGroup":
+                        initBuilder.Append("\t").AppendFormat("self.{0}_ItemTemplate = nil", comp.name).AppendLine(); // 列表项模板
+                        initBuilder.Append("\t").AppendFormat("self.__{0}_POOL = {1}", comp.name, "{}").AppendLine(); // 列表内部池
                         renderBuilder.Append("\t").AppendFormat("if viewModel.{0} ~= nil then", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t").AppendFormat("if viewModel.{0}.enabled ~= nil then self.{0}.enabled = viewModel.{0}.enabled end", comp.name).AppendLine();
                         // items
                         renderBuilder.Append("\t\t").AppendFormat("if viewModel.{0}.items ~= nil then", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t").AppendFormat("assert(self.{0}_ItemTemplate ~= nil, '{1}.{0} item template is nil')", comp.name, facade.viewName).AppendLine();
-                        renderBuilder.Append("\t\t\t").AppendFormat("if self.{0}_ItemTemplate.transform.parent ~= self.__{0}_CONTENT then", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t\t\t").AppendFormat("self.{0}_ItemTemplate.transform:SetParent(self.__{0}_CONTENT, false)", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t\t").AppendFormat("if self.{0}_ItemTemplate.transform.parent ~= self.{0}.transform then", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t\t\t").AppendFormat("self.{0}_ItemTemplate.transform:SetParent(self.{0}.transform, false)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendFormat("table.insert(self.__{0}_POOL, self.{0}_ItemTemplate)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t").AppendLine("end");
                         renderBuilder.Append("\t\t\t").AppendFormat("local minLen = math.min(#self.__{0}_POOL, #viewModel.{0}.items)", comp.name).AppendLine();
@@ -366,11 +369,12 @@ namespace Framework.LuaMVC.Editor
                         renderBuilder.Append("\t\t\t").AppendLine("end");
                         renderBuilder.Append("\t\t\t").AppendFormat("for i=minLen+1,#viewModel.{0}.items do", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendFormat("local ITEM_VIEW = require('MVC.View.'..self.{0}_ItemTemplate.viewName)", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t\t\t").AppendFormat("local itemViewGO = GameObject.Instantiate(self.{0}_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.__{0}_CONTENT)", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t\t\t").AppendFormat("local itemViewGO = GameObject.Instantiate(self.{0}_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.{0}.transform)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendLine("local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'))");
                         renderBuilder.Append("\t\t\t\t").AppendFormat("table.insert(self.__{0}_POOL, itemView)", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t\t\t").AppendFormat("itemViewGO.transform:SetParent(self.__{0}_CONTENT, false)").AppendLine();
+                        renderBuilder.Append("\t\t\t\t").AppendFormat("itemViewGO.transform:SetParent(self.{0}.transform, false)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendLine("itemViewGO:SetActive(true)");
+                        renderBuilder.Append("\t\t\t\t").AppendFormat("itemView:Render(viewModel.{0}.items[i])", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t").AppendLine("end");
                         renderBuilder.Append("\t\t").AppendLine("end");
                         renderBuilder.Append("\t").AppendLine("end");

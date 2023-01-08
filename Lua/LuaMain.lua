@@ -24,7 +24,7 @@ GameObject.DontDestroyOnLoad(GameObject.Find("UI"))
 -- 启动MVC
 require 'MVC.MVCFacade'
 MVCFacade.Initialize(GameObject.Find("UI/Canvas2D").transform)
-MVCFacade.ExcuteCommand('CmdInitHomeController')
+MVCFacade.ExcuteCommand('CmdInitHome')
 MVCFacade.ExcuteCommand('CmdShowBeginAdvanture')
 -- MVCFacade.ExcuteCommand('CmdInitHome')
 -- MVCFacade.ExcuteCommand('CmdShowMyView', "HeiHeiHei")
