@@ -1,0 +1,13 @@
+<root>
+	<topmodule name="cfg"/>
+
+	<group name="server" default="1"/>
+	<group name="client" default="1"/>
+    <group name="remark" default="0"/>
+	
+	<import name="Modules/Gameplay/__gameplay.xml"/>
+	
+	<service name="server" manager="Tables" group="server"/>
+	<service name="client" manager="Tables" group="client"/>
+	<service name="all" manager="Tables" group="server,client"/>
+</root>

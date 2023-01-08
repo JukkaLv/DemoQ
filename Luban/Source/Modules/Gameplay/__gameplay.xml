@@ -1,0 +1,87 @@
+<module name="gp">
+    <!-- Value Compare -->
+    <enum name="E_ValueCompare">
+        <var name="Equal" alias="等于" value="1"/>
+        <var name="NEqual" alias="不等于" value="2"/>
+        <var name="Greater" alias="大于" value="3"/>
+        <var name="GEqual" alias="大于等于" value="4"/>
+        <var name="Less" alias="小于" value="5"/>
+        <var name="LEqual" alias="小于等于" value="6"/>
+    </enum>
+    <!-- Element Types -->
+    <enum name="E_Element" flags="1">
+        <var name="None" alias="无" value="0"/>
+        <var name="Fire" alias="火" value="1"/>
+        <var name="Water" alias="水" value="2"/>
+        <var name="Wind" alias="风" value="4"/>
+        <var name="Earth" alias="地" value="8"/>
+        <var name="Light" alias="光" value="16"/>
+        <var name="Dark" alias="暗" value="32"/>
+    </enum>
+    <!-- Battle Camp -->
+    <enum name="E_BattleCamp" flags="1">
+        <var name="Own" alias="己方" value="1"/>
+        <var name="Opp" alias="敌方" value="2"/>
+        <var name="All" alias="双方" value="Own|Opp"/>
+    </enum>
+    <!-- Battle Attribute -->
+    <enum name="E_BattleAttribute">
+        <var name="Hp" alias="生命" value="0"/>
+        <var name="HpPer" alias="生命比例" value="1"/>
+        <var name="MaxHp" alias="最大生命" value="2"/>
+        <var name="Atk" alias="物攻" value="3"/>
+        <var name="Def" alias="物防" value="4"/>
+        <var name="MAtk" alias="魔攻" value="5"/>
+        <var name="MDef" alias="魔防" value="6"/>
+        <var name="Spd" alias="速度" value="7"/>
+    </enum>
+    <enum name="E_BattleSkillType">
+        <var name="Normal" alias="普通技能" value="0"/>
+        <var name="Slot" alias="转盘技能" value="1"/>
+    </enum>
+
+    <!-- Target Filter -->
+    <bean name="B_TF">
+        <var name="camp" type="E_BattleCamp"/>
+        <var name="dist" type="B_TF_Dist"/>
+        <var name="attr" type="B_TF_Attr"/>
+        <var name="exSelf" type="bool"/>
+    </bean>
+    <!-- Target Filter Distance Module -->
+    <bean name="B_TF_Dist" sep=",">
+        <var name="isOn" type="bool"/>
+        <var name="value" type="int"/>
+        <var name="comp" type="E_ValueCompare"/>
+    </bean>
+    <!-- Target Filter Attribute Module -->
+    <bean name="B_TF_Attr" sep=",">
+        <var name="isOn" type="bool"/>
+        <var name="attr" type="E_BattleAttribute"/>
+        <var name="value" type="int"/>
+        <var name="comp" type="E_ValueCompare"/>
+    </bean>
+
+    <!-- Target Selector -->
+    <bean name="B_TS">
+        <var name="method" type="E_TS_Method"/>
+        <!-- 配合 method=AttrLowest,AttrHighest 使用 -->
+        <var name="attr" type="E_BattleAttribute"/>
+        <!-- amount=0 表示全部 -->
+        <var name="amount" type="int"/>
+    </bean>
+    <!-- Target Selector Position Module -->
+    <enum name="E_TS_Method">
+        <var name="None" alias="无" value="1"/>
+        <var name="Random" alias="随机" value="2"/>
+        <var name="Nearest" alias="最近" value="3"/>
+        <var name="Farest" alias="最远" value="4"/>
+        <var name="Match" alias="对位" value="5"/>
+        <var name="All" alias="全体" value="6"/>
+        <var name="Self" alias="自己" value="7"/>
+        <var name="AttrLowest" alias="属性最低" value="8"/>
+        <var name="AttrHighest" alias="属性最高" value="9"/>
+    </enum>
+
+    <table name="TblActor" value="Actor" define_from_file="true"  mode="map" index="id" input="Gameplay/Actor.xlsx"/>
+    <table name="TblSkill" value="Skill" define_from_file="true" mode="map" index="id" input="Gameplay/Skill.xlsx"/>
+</module>

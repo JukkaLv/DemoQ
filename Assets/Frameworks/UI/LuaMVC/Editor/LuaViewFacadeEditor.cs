@@ -136,8 +136,15 @@ namespace Framework.LuaMVC.Editor
             EditorGUI.PropertyField(new Rect(fieldRect.x + 60, fieldRect.y + 1, fieldRect.width - 60f, 18f), targetProperty, new GUIContent(""));
             if (EditorGUI.EndChangeCheck())
             {
-                if (targetProperty.objectReferenceValue == null) typeProperty.stringValue = string.Empty;
-                else typeProperty.stringValue = "Object";
+                if (targetProperty.objectReferenceValue == null)
+                {
+                    typeProperty.stringValue = string.Empty;
+                }
+                else
+                {
+                    typeProperty.stringValue = "Object";
+                    nameProperty.stringValue = targetProperty.objectReferenceValue.name;
+                }
             }
             
             fieldRect.y += 20f;

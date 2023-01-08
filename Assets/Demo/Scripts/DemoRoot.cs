@@ -16,7 +16,7 @@ public class DemoRoot : MonoBehaviour
     void Start()
     {
         LuaManager.Instance.AddLoadPath(Application.streamingAssetsPath + "/Lua/"); // 留着这个LaodPath，打包的话直接丢到StreamingAssets下比较快
-        LuaManager.Instance.Launch("DemoMain");
+        LuaManager.Instance.Launch("LuaMain");
     }
 
     void Update()

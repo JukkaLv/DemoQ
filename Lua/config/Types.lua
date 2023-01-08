@@ -27,12 +27,53 @@ end
 
 local enums =
 {
-    ---@class gp.HeroClass
-     ---@field public NORMAL integer
-     ---@field public RARE integer
-     ---@field public EPIC integer
-     ---@field public LEGEND integer
-    ['gp.HeroClass'] = {   NORMAL=1,  RARE=2,  EPIC=3,  LEGEND=4,  };
+    ---@class gp.E_ValueCompare
+     ---@field public Equal integer
+     ---@field public NEqual integer
+     ---@field public Greater integer
+     ---@field public GEqual integer
+     ---@field public Less integer
+     ---@field public LEqual integer
+    ['gp.E_ValueCompare'] = {   Equal=1,  NEqual=2,  Greater=3,  GEqual=4,  Less=5,  LEqual=6,  };
+    ---@class gp.E_Element
+     ---@field public None integer
+     ---@field public Fire integer
+     ---@field public Water integer
+     ---@field public Wind integer
+     ---@field public Earth integer
+     ---@field public Light integer
+     ---@field public Dark integer
+    ['gp.E_Element'] = {   None=0,  Fire=1,  Water=2,  Wind=4,  Earth=8,  Light=16,  Dark=32,  };
+    ---@class gp.E_BattleCamp
+     ---@field public Own integer
+     ---@field public Opp integer
+     ---@field public All integer
+    ['gp.E_BattleCamp'] = {   Own=1,  Opp=2,  All=3,  };
+    ---@class gp.E_BattleAttribute
+     ---@field public Hp integer
+     ---@field public HpPer integer
+     ---@field public MaxHp integer
+     ---@field public Atk integer
+     ---@field public Def integer
+     ---@field public MAtk integer
+     ---@field public MDef integer
+     ---@field public Spd integer
+    ['gp.E_BattleAttribute'] = {   Hp=0,  HpPer=1,  MaxHp=2,  Atk=3,  Def=4,  MAtk=5,  MDef=6,  Spd=7,  };
+    ---@class gp.E_BattleSkillType
+     ---@field public Normal integer
+     ---@field public Slot integer
+    ['gp.E_BattleSkillType'] = {   Normal=0,  Slot=1,  };
+    ---@class gp.E_TS_Method
+     ---@field public None integer
+     ---@field public Random integer
+     ---@field public Nearest integer
+     ---@field public Farest integer
+     ---@field public Match integer
+     ---@field public All integer
+     ---@field public Self integer
+     ---@field public AttrLowest integer
+     ---@field public AttrHighest integer
+    ['gp.E_TS_Method'] = {   None=1,  Random=2,  Nearest=3,  Farest=4,  Match=5,  All=6,  Self=7,  AttrLowest=8,  AttrHighest=9,  };
 }
 
 
@@ -101,35 +142,16 @@ local function InitTypes(methods)
 
     local beans = {}
     do
-    ---@class gp.GlobalDefines 
-     ---@field public global_a integer
-     ---@field public global_b string
-     ---@field public global_c number
-     ---@field public global_d string[]
-        local class = SimpleClass()
-        class._id = -531279728
-        class['_type_'] = 'gp.GlobalDefines'
-        local id2name = {  }
-        class._deserialize = function(bs)
-            local o = {
-            global_a = readInt(bs),
-            global_b = readString(bs),
-            global_c = readFloat(bs),
-            global_d = readList(bs, readString),
-            }
-            setmetatable(o, class)
-            return o
-        end
-        beans[class['_type_']] = class
-    end
-    do
     ---@class gp.Actor 
      ---@field public id integer
      ---@field public name string
-     ---@field public class integer
-     ---@field public level integer
-     ---@field public hudOffset number
-     ---@field public skillIds integer[]
+     ---@field public element integer
+     ---@field public maxHP integer
+     ---@field public speed integer
+     ---@field public size integer
+     ---@field public skills integer[]
+     ---@field public prefab string
+     ---@field public icon string
         local class = SimpleClass()
         class._id = 1117036688
         class['_type_'] = 'gp.Actor'
@@ -138,10 +160,13 @@ local function InitTypes(methods)
             local o = {
             id = readInt(bs),
             name = readString(bs),
-            class = readInt(bs),
-            level = readInt(bs),
-            hudOffset = readFloat(bs),
-            skillIds = readList(bs, readInt),
+            element = readInt(bs),
+            maxHP = readInt(bs),
+            speed = readInt(bs),
+            size = readInt(bs),
+            skills = readList(bs, readInt),
+            prefab = readString(bs),
+            icon = readString(bs),
             }
             setmetatable(o, class)
             return o
@@ -152,7 +177,16 @@ local function InitTypes(methods)
     ---@class gp.Skill 
      ---@field public id integer
      ---@field public name string
-     ---@field public isUlt boolean
+     ---@field public startCD integer
+     ---@field public intervalCD integer
+     ---@field public priority integer
+     ---@field public power integer
+     ---@field public type integer
+     ---@field public elements integer[]
+     ---@field public enterAction string
+     ---@field public castAction string
+     ---@field public targetFilter gp.B_TF
+     ---@field public targetSelector gp.B_TS
         local class = SimpleClass()
         class._id = 1133887724
         class['_type_'] = 'gp.Skill'
@@ -161,7 +195,16 @@ local function InitTypes(methods)
             local o = {
             id = readInt(bs),
             name = readString(bs),
-            isUlt = readBool(bs),
+            startCD = readInt(bs),
+            intervalCD = readInt(bs),
+            priority = readInt(bs),
+            power = readInt(bs),
+            type = readInt(bs),
+            elements = readList(bs, readInt),
+            enterAction = readBool(bs) and readString(bs) or nil,
+            castAction = readBool(bs) and readString(bs) or nil,
+            targetFilter = beans['gp.B_TF']._deserialize(bs),
+            targetSelector = beans['gp.B_TS']._deserialize(bs),
             }
             setmetatable(o, class)
             return o
@@ -169,17 +212,21 @@ local function InitTypes(methods)
         beans[class['_type_']] = class
     end
     do
-    ---@class gp.SkillLevel 
-     ---@field public skillId integer
-     ---@field public levelInfos gp.SkillLevelInfo[]
+    ---@class gp.B_TF 
+     ---@field public camp integer
+     ---@field public dist gp.B_TF_Dist
+     ---@field public attr gp.B_TF_Attr
+     ---@field public exSelf boolean
         local class = SimpleClass()
-        class._id = -350708232
-        class['_type_'] = 'gp.SkillLevel'
+        class._id = 174605684
+        class['_type_'] = 'gp.B_TF'
         local id2name = {  }
         class._deserialize = function(bs)
             local o = {
-            skillId = readInt(bs),
-            levelInfos = readList(bs, beans['gp.SkillLevelInfo']._deserialize),
+            camp = readInt(bs),
+            dist = beans['gp.B_TF_Dist']._deserialize(bs),
+            attr = beans['gp.B_TF_Attr']._deserialize(bs),
+            exSelf = readBool(bs),
             }
             setmetatable(o, class)
             return o
@@ -187,17 +234,61 @@ local function InitTypes(methods)
         beans[class['_type_']] = class
     end
     do
-    ---@class gp.SkillLevelInfo 
-     ---@field public level integer
-     ---@field public exp integer
+    ---@class gp.B_TF_Dist 
+     ---@field public isOn boolean
+     ---@field public value integer
+     ---@field public comp integer
         local class = SimpleClass()
-        class._id = 1363917510
-        class['_type_'] = 'gp.SkillLevelInfo'
+        class._id = -1069007439
+        class['_type_'] = 'gp.B_TF_Dist'
         local id2name = {  }
         class._deserialize = function(bs)
             local o = {
-            level = readInt(bs),
-            exp = readInt(bs),
+            isOn = readBool(bs),
+            value = readInt(bs),
+            comp = readInt(bs),
+            }
+            setmetatable(o, class)
+            return o
+        end
+        beans[class['_type_']] = class
+    end
+    do
+    ---@class gp.B_TF_Attr 
+     ---@field public isOn boolean
+     ---@field public attr integer
+     ---@field public value integer
+     ---@field public comp integer
+        local class = SimpleClass()
+        class._id = -1069086212
+        class['_type_'] = 'gp.B_TF_Attr'
+        local id2name = {  }
+        class._deserialize = function(bs)
+            local o = {
+            isOn = readBool(bs),
+            attr = readInt(bs),
+            value = readInt(bs),
+            comp = readInt(bs),
+            }
+            setmetatable(o, class)
+            return o
+        end
+        beans[class['_type_']] = class
+    end
+    do
+    ---@class gp.B_TS 
+     ---@field public method integer
+     ---@field public attr integer
+     ---@field public amount integer
+        local class = SimpleClass()
+        class._id = 174605697
+        class['_type_'] = 'gp.B_TS'
+        local id2name = {  }
+        class._deserialize = function(bs)
+            local o = {
+            method = readInt(bs),
+            attr = readInt(bs),
+            amount = readInt(bs),
             }
             setmetatable(o, class)
             return o
@@ -207,10 +298,8 @@ local function InitTypes(methods)
 
     local tables =
     {
-    { name='TblGlobalDefines', file='gp_tblglobaldefines', mode='one', value_type='gp.GlobalDefines'},
     { name='TblActor', file='gp_tblactor', mode='map', index='id', value_type='gp.Actor' },
     { name='TblSkill', file='gp_tblskill', mode='map', index='id', value_type='gp.Skill' },
-    { name='TblSkillLevel', file='gp_tblskilllevel', mode='map', index='skillId', value_type='gp.SkillLevel' },
     }
     return { enums = enums, beans = beans, tables = tables }
     end

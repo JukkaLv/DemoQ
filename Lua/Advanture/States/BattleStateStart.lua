@@ -44,7 +44,7 @@ function BattleStateStart:OnUpdate(deltaTime)
                 local actor = advantureInst.actors[i]
                 for j=self.loopSkillIdx,#actor.skills do
                     local enterActionName = actor.skills[j].cfgTbl.enterAction
-                    if enterActionName ~= nil then
+                    if enterActionName ~= nil and enterActionName ~= '' then
                         -- 技能有enterAction，中断遍历，记录一下遍历索引
                         self.loopActorIdx = i
                         self.loopSkillIdx = j+1

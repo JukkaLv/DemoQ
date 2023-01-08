@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Framework.Lua;
+using Framework.FileSys;
 
 namespace Framework.LuaMVC.Editor
 {
@@ -29,11 +30,13 @@ namespace Framework.LuaMVC.Editor
             if (sucess)
             {
                 string path = LUA_VIEW_DIR + facade.viewName + ".lua";
+                FileHelper.CreateDirectoriesByPath(path);
                 if (File.Exists(path))
                 {
                     if (EditorUtility.DisplayDialog("Notice", path + "\n Overwrite the exist file?", "Yes", "No")) File.Delete(path);
                 }
                 File.WriteAllText(path, strBuilder.ToString());
+                Debug.Log("Generate Success.");
             }
         }
 

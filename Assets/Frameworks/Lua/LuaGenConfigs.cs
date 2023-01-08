@@ -38,6 +38,7 @@ public static class LuaGenConfigs
 
         // Framework
         typeof(Framework.Asset.AssetManager),
+        typeof(Framework.Lua.AssetManagerExtensions),
 
         // Luban
         typeof(Bright.Serialization.ByteBuf),

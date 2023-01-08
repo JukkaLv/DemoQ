@@ -1,5 +1,7 @@
 _ENV = _G._ENV_ADVANTURE
 
+local cfg = require 'config.Cfg'
+
 local Actor = {}
 Actor.__index = Actor
 
@@ -16,7 +18,7 @@ end
 function Actor:Init(id, context)
     self.id = id
     self.context = context
-    self.context.cfgTbl = ConfigCenter.Find("actor", context.cfgID)
+    self.context.cfgTbl = cfg.GetData("TblActor", context.cfgID)
     self.hp = self.context.cfgTbl.maxHP
     self.spd = self.context.cfgTbl.speed
 
@@ -29,7 +31,7 @@ function Actor:Init(id, context)
     -- skills
     self.skills = {}
     for _,skillCfgID in ipairs(self.context.cfgTbl.skills) do
-        local skill = { owner=self, cfgTbl=ConfigCenter.Find("skill", skillCfgID) }
+        local skill = { owner=self, cfgTbl=cfg.GetData("TblSkill", skillCfgID) }
         table.insert(self.skills, skill)
     end
 

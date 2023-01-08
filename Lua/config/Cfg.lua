@@ -62,12 +62,12 @@ local enumDefs = {}
 
 local tables = {}
 
-local function Load(typeDefs)
+local function Load(typeDefs, loadPath)
     enumDefs = typeDefs.enums
     -- constDefs = typeDefs.consts
 
     local loader = CS.Framework.Luban.LubanLoader()
-    loader:AddLoadPath('Assets/Luban/Bin/')
+    loader:AddLoadPath(loadPath)
 
     local tableDefs = typeDefs.tables
     local beanDefs = typeDefs.beans
@@ -126,10 +126,10 @@ function Cfg.GetData(tblName, ...)
 	return tbl
 end
 
-function Cfg.Init()
+function Cfg.Init(loadPath)
     local t = os.clock()
     local cfgTypeDefs = require("config.Types").InitTypes(byteBufFuns)
-    Load(cfgTypeDefs)
+    Load(cfgTypeDefs, loadPath)
     local cost = os.clock() - t
     print("Configs Loaded. cost "..cost.." ms")
 end
