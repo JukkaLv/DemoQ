@@ -27,6 +27,7 @@ public sealed partial class Skill :  Bright.Config.BeanBase
         if(_buf.ReadBool()){ castAction = _buf.ReadString(); } else { castAction = null; }
         targetFilter = gp.B_TF.DeserializeB_TF(_buf);
         targetSelector = gp.B_TS.DeserializeB_TS(_buf);
+        desc = _buf.ReadString();
         PostInit();
     }
 
@@ -83,6 +84,10 @@ public sealed partial class Skill :  Bright.Config.BeanBase
     /// 技能目标选择器
     /// </summary>
     public gp.B_TS targetSelector { get; private set; }
+    /// <summary>
+    /// 技能描述
+    /// </summary>
+    public string desc { get; private set; }
 
     public const int __ID__ = 1133887724;
     public override int GetTypeId() => __ID__;
@@ -115,6 +120,7 @@ public sealed partial class Skill :  Bright.Config.BeanBase
         + "castAction:" + castAction + ","
         + "targetFilter:" + targetFilter + ","
         + "targetSelector:" + targetSelector + ","
+        + "desc:" + desc + ","
         + "}";
     }
     

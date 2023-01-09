@@ -3,10 +3,13 @@ local Notifier = require 'Framework.Notifier'
 local BeginAdvanturePanelView = {}
 BeginAdvanturePanelView.__index = BeginAdvanturePanelView
 BeginAdvanturePanelView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/PanelView_BeginAdvanture.prefab'
-function BeginAdvanturePanelView.Create(facade)
+function BeginAdvanturePanelView.Create(facade, inherit)
 	local copy = {}
 	setmetatable(copy, BeginAdvanturePanelView)
 	copy:Init(facade)
+	if inherit ~= nil then
+		copy.bottom_ItemTemplate = inherit.bottom_ItemTemplate
+	end
 	return copy
 end
 
@@ -128,10 +131,6 @@ function BeginAdvanturePanelView:Render(viewModel)
 	if viewModel.bottom ~= nil then
 		if viewModel.bottom.items ~= nil then
 			assert(self.bottom_ItemTemplate ~= nil, 'BeginAdvanturePanelView.bottom item template is nil')
-			if self.bottom_ItemTemplate.transform.parent ~= self.bottom.transform then
-				self.bottom_ItemTemplate.transform:SetParent(self.bottom.transform, false)
-				table.insert(self.__bottom_POOL, self.bottom_ItemTemplate)
-			end
 			local minLen = math.min(#self.__bottom_POOL, #viewModel.bottom.items)
 			for i=1,minLen do
 				self.__bottom_POOL[i].gameObject:SetActive(true)
@@ -143,7 +142,7 @@ function BeginAdvanturePanelView:Render(viewModel)
 			for i=minLen+1,#viewModel.bottom.items do
 				local ITEM_VIEW = require('MVC.View.'..self.bottom_ItemTemplate.viewName)
 				local itemViewGO = GameObject.Instantiate(self.bottom_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.bottom.transform)
-				local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'))
+				local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'), self.bottom_ItemTemplate)
 				table.insert(self.__bottom_POOL, itemView)
 				itemViewGO.transform:SetParent(self.bottom.transform, false)
 				itemViewGO:SetActive(true)
@@ -155,6 +154,26 @@ function BeginAdvanturePanelView:Render(viewModel)
 		if viewModel.btn_go.enabled ~= nil then self.btn_go.enabled = viewModel.btn_go.enabled end
 		if viewModel.btn_go.interactable ~= nil then self.btn_go.interactable = viewModel.btn_go.interactable end
 		if viewModel.btn_go.OnClickNoti ~= nil then self.btn_go_OnClickNoti = viewModel.btn_go.OnClickNoti end
+	end
+	if viewModel.label_1 ~= nil then
+		if viewModel.label_1.enabled ~= nil then self.label_1.enabled = viewModel.label_1.enabled end
+		if viewModel.label_1.text ~= nil then self.label_1.text = viewModel.label_1.text end
+		if viewModel.label_1.color ~= nil then self.label_1.color = viewModel.label_1.color end
+	end
+	if viewModel.label_2 ~= nil then
+		if viewModel.label_2.enabled ~= nil then self.label_2.enabled = viewModel.label_2.enabled end
+		if viewModel.label_2.text ~= nil then self.label_2.text = viewModel.label_2.text end
+		if viewModel.label_2.color ~= nil then self.label_2.color = viewModel.label_2.color end
+	end
+	if viewModel.label_3 ~= nil then
+		if viewModel.label_3.enabled ~= nil then self.label_3.enabled = viewModel.label_3.enabled end
+		if viewModel.label_3.text ~= nil then self.label_3.text = viewModel.label_3.text end
+		if viewModel.label_3.color ~= nil then self.label_3.color = viewModel.label_3.color end
+	end
+	if viewModel.label_4 ~= nil then
+		if viewModel.label_4.enabled ~= nil then self.label_4.enabled = viewModel.label_4.enabled end
+		if viewModel.label_4.text ~= nil then self.label_4.text = viewModel.label_4.text end
+		if viewModel.label_4.color ~= nil then self.label_4.color = viewModel.label_4.color end
 	end
 end
 

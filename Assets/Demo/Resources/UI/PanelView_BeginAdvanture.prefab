@@ -241,6 +241,30 @@ MonoBehaviour:
     paramStr: 
     paramInt: 0
     paramObj: {fileID: 0}
+  - type: Text
+    name: label_1
+    target: {fileID: 3885159697984633831}
+    paramStr: 
+    paramInt: 0
+    paramObj: {fileID: 0}
+  - type: Text
+    name: label_2
+    target: {fileID: 3885159697513270701}
+    paramStr: 
+    paramInt: 0
+    paramObj: {fileID: 0}
+  - type: Text
+    name: label_3
+    target: {fileID: 3885159699008199214}
+    paramStr: 
+    paramInt: 0
+    paramObj: {fileID: 0}
+  - type: Text
+    name: label_4
+    target: {fileID: 3885159699120922041}
+    paramStr: 
+    paramInt: 0
+    paramObj: {fileID: 0}
 --- !u!1 &3885159697353322534
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,7 +683,7 @@ GameObject:
   - component: {fileID: 3885159697513270702}
   - component: {fileID: 3885159697513270701}
   m_Layer: 5
-  m_Name: label
+  m_Name: label_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -726,7 +750,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4E0A\u9635\u968F\u4ECE2"
+  m_Text: "\u672A\u4E0A\u9635"
 --- !u!1 &3885159697555385160
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1078,7 @@ GameObject:
   - component: {fileID: 3885159697984633824}
   - component: {fileID: 3885159697984633831}
   m_Layer: 5
-  m_Name: label
+  m_Name: label_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1121,7 +1145,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4E0A\u9635\u968F\u4ECE1"
+  m_Text: "\u672A\u4E0A\u9635"
 --- !u!1 &3885159698113148646
 GameObject:
   m_ObjectHideFlags: 0
@@ -2262,7 +2286,7 @@ GameObject:
   - component: {fileID: 3885159699008199215}
   - component: {fileID: 3885159699008199214}
   m_Layer: 5
-  m_Name: label
+  m_Name: label_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2329,7 +2353,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4E0A\u9635\u968F\u4ECE3"
+  m_Text: "\u672A\u4E0A\u9635"
 --- !u!1 &3885159699043074689
 GameObject:
   m_ObjectHideFlags: 0
@@ -2418,7 +2442,7 @@ GameObject:
   - component: {fileID: 3885159699120922042}
   - component: {fileID: 3885159699120922041}
   m_Layer: 5
-  m_Name: label
+  m_Name: label_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2485,7 +2509,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4E0A\u9635\u968F\u4ECE4"
+  m_Text: "\u672A\u4E0A\u9635"
 --- !u!1 &3885159699140257253
 GameObject:
   m_ObjectHideFlags: 0

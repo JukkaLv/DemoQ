@@ -4,10 +4,12 @@ local SelectHeroItemView = {}
 SelectHeroItemView.__index = SelectHeroItemView
 SelectHeroItemView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/ItemView_SelectHero.prefab'
 
-function SelectHeroItemView.Create(facade)
+function SelectHeroItemView.Create(facade, inherit)
 	local copy = {}
 	setmetatable(copy, SelectHeroItemView)
 	copy:Init(facade)
+	if inherit ~= nil then
+	end
 	return copy
 end
 

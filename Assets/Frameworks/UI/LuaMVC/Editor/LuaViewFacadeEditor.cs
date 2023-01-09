@@ -76,6 +76,7 @@ namespace Framework.LuaMVC.Editor
         private static List<string> __supportCompTypes = new List<string>(10)
         {
             "Object",
+            "RectTransform",
             "LuaViewFacade",
             "Image",
             "RawImage",
@@ -104,11 +105,17 @@ namespace Framework.LuaMVC.Editor
             List<Object> typeTargets = new List<Object>(10);
 
             Object obj = targetProperty.objectReferenceValue as Object;
-            GameObject go = obj == null ? null : (obj is GameObject ? (GameObject)obj : ((MonoBehaviour)obj).gameObject);
+            GameObject go = null;
+            if (obj is GameObject) go = (GameObject)obj;
+            else if (obj is Transform) go = ((Transform)obj).gameObject;
+            else go = ((MonoBehaviour)obj).gameObject;
+            
             if (go != null)
             {
                 typeOptions.Add("Object");
+                typeOptions.Add("RectTransform");
                 typeTargets.Add(go);
+                typeTargets.Add(go.transform);
                 
                 for (int i = 1; i < __supportCompTypes.Count; i++)
                 {

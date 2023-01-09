@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(Framework.Asset.AssetManager);
-			Utils.BeginObjectRegister(type, L, translator, 0, 6, 1, 1);
+			Utils.BeginObjectRegister(type, L, translator, 0, 10, 1, 1);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Dispose", _m_Dispose);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadBundle", _m_LoadBundle);
@@ -29,6 +29,10 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Unload", _m_Unload);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadPrefab", _m_LoadPrefab);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadPrefabAsync", _m_LoadPrefabAsync);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadSprite", _m_LoadSprite);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadSpriteAsync", _m_LoadSpriteAsync);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadTexture", _m_LoadTexture);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadTextureAsync", _m_LoadTextureAsync);
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "m_factory", _g_get_m_factory);
@@ -255,6 +259,122 @@ namespace XLua.CSObjectWrap
                     string _assetPath = LuaAPI.lua_tostring(L, 2);
                     
                         var gen_ret = gen_to_be_invoked.LoadPrefabAsync( _assetPath );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_LoadSprite(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                Framework.Asset.AssetManager gen_to_be_invoked = (Framework.Asset.AssetManager)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _assetPath = LuaAPI.lua_tostring(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.LoadSprite( _assetPath );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_LoadSpriteAsync(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                Framework.Asset.AssetManager gen_to_be_invoked = (Framework.Asset.AssetManager)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _assetPath = LuaAPI.lua_tostring(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.LoadSpriteAsync( _assetPath );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_LoadTexture(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                Framework.Asset.AssetManager gen_to_be_invoked = (Framework.Asset.AssetManager)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _assetPath = LuaAPI.lua_tostring(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.LoadTexture( _assetPath );
+                        translator.PushAny(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_LoadTextureAsync(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                Framework.Asset.AssetManager gen_to_be_invoked = (Framework.Asset.AssetManager)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _assetPath = LuaAPI.lua_tostring(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.LoadTextureAsync( _assetPath );
                         translator.PushAny(L, gen_ret);
                     
                     

@@ -82,17 +82,20 @@ namespace Framework.LuaMVC.Editor
             strBuilder.AppendFormat("{0}.__PREFAB_ASSET = '{1}'", viewTblName, AssetDatabase.GetAssetPath(facade)).AppendLine();
             #endregion
 
+            GenerateViewComps(facade, out StringBuilder compsCreateBuilder, out StringBuilder compsInitBuider, out StringBuilder compsRenderBuilder);
+
             #region func Create
-            strBuilder.AppendFormat("function {0}.Create(facade)", viewTblName).AppendLine();
+            strBuilder.AppendFormat("function {0}.Create(facade, inherit)", viewTblName).AppendLine();
             strBuilder.Append("\t").AppendLine("local copy = {}");
             strBuilder.Append("\t").AppendFormat("setmetatable(copy, {0})", viewTblName).AppendLine();
             strBuilder.Append("\t").AppendLine("copy:Init(facade)");
+            strBuilder.Append("\t").AppendLine("if inherit ~= nil then");
+            strBuilder.Append(compsCreateBuilder);
+            strBuilder.Append("\t").AppendLine("end");
             strBuilder.Append("\t").AppendLine("return copy");
             strBuilder.AppendLine("end");
             strBuilder.AppendLine();
             #endregion
-
-            GenerateViewComps(facade, out StringBuilder compsInitBuider, out StringBuilder compsRenderBuilder);
 
             #region func Init
             strBuilder.AppendFormat("function {0}:Init(facade)", viewTblName).AppendLine();
@@ -181,17 +184,20 @@ namespace Framework.LuaMVC.Editor
             strBuilder.AppendLine();
             #endregion
 
+            GenerateViewComps(facade, out StringBuilder compsCreateBuilder, out StringBuilder compsInitBuilder, out StringBuilder compsRenderBuilder);
+
             #region func Create
-            strBuilder.AppendFormat("function {0}.Create(facade)", viewTblName).AppendLine();
+            strBuilder.AppendFormat("function {0}.Create(facade, inherit)", viewTblName).AppendLine();
             strBuilder.Append("\t").AppendLine("local copy = {}");
             strBuilder.Append("\t").AppendFormat("setmetatable(copy, {0})", viewTblName).AppendLine();
             strBuilder.Append("\t").AppendLine("copy:Init(facade)");
+            strBuilder.Append("\t").AppendLine("if inherit ~= nil then");
+            strBuilder.Append(compsCreateBuilder);
+            strBuilder.Append("\t").AppendLine("end");
             strBuilder.Append("\t").AppendLine("return copy");
             strBuilder.AppendLine("end");
             strBuilder.AppendLine();
             #endregion
-
-            GenerateViewComps(facade, out StringBuilder compsInitBuilder, out StringBuilder compsRenderBuilder);
 
             #region func Init
             strBuilder.AppendFormat("function {0}:Init(facade)", viewTblName).AppendLine();
@@ -246,8 +252,9 @@ namespace Framework.LuaMVC.Editor
             return string.Join('.', stack);
         }
 
-        private static void GenerateViewComps(LuaViewFacade facade, out StringBuilder initBuilder, out StringBuilder renderBuilder)
+        private static void GenerateViewComps(LuaViewFacade facade, out StringBuilder createBuilder, out StringBuilder initBuilder, out StringBuilder renderBuilder)
         {
+            createBuilder = new StringBuilder();
             initBuilder = new StringBuilder();
             renderBuilder = new StringBuilder();
             foreach (LuaViewComponent comp in facade.comps)
@@ -349,16 +356,13 @@ namespace Framework.LuaMVC.Editor
                         renderBuilder.Append("\t").AppendLine("end");
                         break;
                     case "LayoutGroup":
+                        createBuilder.Append("\t\t").AppendFormat("copy.{0}_ItemTemplate = inherit.{0}_ItemTemplate", comp.name).AppendLine();  // 列表项模板需要逐层传递
                         initBuilder.Append("\t").AppendFormat("self.{0}_ItemTemplate = nil", comp.name).AppendLine(); // 列表项模板
                         initBuilder.Append("\t").AppendFormat("self.__{0}_POOL = {1}", comp.name, "{}").AppendLine(); // 列表内部池
                         renderBuilder.Append("\t").AppendFormat("if viewModel.{0} ~= nil then", comp.name).AppendLine();
                         // items
                         renderBuilder.Append("\t\t").AppendFormat("if viewModel.{0}.items ~= nil then", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t").AppendFormat("assert(self.{0}_ItemTemplate ~= nil, '{1}.{0} item template is nil')", comp.name, facade.viewName).AppendLine();
-                        renderBuilder.Append("\t\t\t").AppendFormat("if self.{0}_ItemTemplate.transform.parent ~= self.{0}.transform then", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t\t\t").AppendFormat("self.{0}_ItemTemplate.transform:SetParent(self.{0}.transform, false)", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t\t\t").AppendFormat("table.insert(self.__{0}_POOL, self.{0}_ItemTemplate)", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t\t").AppendLine("end");
                         renderBuilder.Append("\t\t\t").AppendFormat("local minLen = math.min(#self.__{0}_POOL, #viewModel.{0}.items)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t").AppendLine("for i=1,minLen do");
                         renderBuilder.Append("\t\t\t\t").AppendFormat("self.__{0}_POOL[i].gameObject:SetActive(true)", comp.name).AppendLine();
@@ -370,7 +374,7 @@ namespace Framework.LuaMVC.Editor
                         renderBuilder.Append("\t\t\t").AppendFormat("for i=minLen+1,#viewModel.{0}.items do", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendFormat("local ITEM_VIEW = require('MVC.View.'..self.{0}_ItemTemplate.viewName)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendFormat("local itemViewGO = GameObject.Instantiate(self.{0}_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.{0}.transform)", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t\t\t").AppendLine("local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'))");
+                        renderBuilder.Append("\t\t\t\t").AppendFormat("local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'), self.{0}_ItemTemplate)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendFormat("table.insert(self.__{0}_POOL, itemView)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendFormat("itemViewGO.transform:SetParent(self.{0}.transform, false)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendLine("itemViewGO:SetActive(true)");

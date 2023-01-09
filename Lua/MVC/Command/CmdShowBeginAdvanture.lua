@@ -10,6 +10,7 @@ function CmdShowBeginAdvanture.Excute()
     vm.img_role_2 = { enabled = false }
     vm.img_role_3 = { enabled = false }
     vm.img_role_4 = { enabled = false }
+    vm.btn_go = { interactable = false }
 
     vm.bottom = { items = {} }
     for id=102,107 do
@@ -18,6 +19,7 @@ function CmdShowBeginAdvanture.Excute()
         vm_item.txt_name = { text = actorTbl.name }
         vm_item.txt_hp = { text = "生命值:"..actorTbl.maxHP }
         vm_item.txt_spd = { text = "速度:"..actorTbl.speed }
+        vm_item.img_element = { sprite = ViewUtils.GetElementSprite(actorTbl.element) }
 
         local skillTbl1 = cfg.GetData("TblSkill", actorTbl.skills[1])
         vm_item.txt_skill_1 = { text = skillTbl1.name }
@@ -27,7 +29,7 @@ function CmdShowBeginAdvanture.Excute()
         vm_item.txt_skill_2 = { text = skillTbl2.name }
         vm_item.btn_skill_2 = { OnClickNoti = { name = "SHOW_SKILL_TIP", body = { skillTbl2 } } }
 
-        vm_item.btn_root = { OnClickNoti = { name = "CLICK_HERO_BOTTOM", body = { actorTbl } } }
+        vm_item.btn_root = { OnClickNoti = { name = "CHOOSE_HERO", body = { actorTbl } } }
 
         table.insert(vm.bottom.items, vm_item)
     end

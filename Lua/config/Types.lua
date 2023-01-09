@@ -187,6 +187,7 @@ local function InitTypes(methods)
      ---@field public castAction string
      ---@field public targetFilter gp.B_TF
      ---@field public targetSelector gp.B_TS
+     ---@field public desc string
         local class = SimpleClass()
         class._id = 1133887724
         class['_type_'] = 'gp.Skill'
@@ -205,6 +206,7 @@ local function InitTypes(methods)
             castAction = readBool(bs) and readString(bs) or nil,
             targetFilter = beans['gp.B_TF']._deserialize(bs),
             targetSelector = beans['gp.B_TS']._deserialize(bs),
+            desc = readString(bs),
             }
             setmetatable(o, class)
             return o

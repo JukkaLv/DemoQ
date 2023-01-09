@@ -5,7 +5,8 @@ require('UnityDefines')
 local Timer = require('Framework.Timer')
 
 serpent = require('utils.serpent') -- 格式化打印Table的工具
-CommonUtils = require('utils.CommonUtils') -- 通用方法集
+CommonUtils = require('utils.CommonUtils') -- 通用工具方法集
+ViewUtils = require("utils.ViewUtils") -- UI工具方法集
 
 -- Lua端游戏主体
 Game = {}
