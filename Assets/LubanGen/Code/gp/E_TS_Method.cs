@@ -14,39 +14,39 @@ namespace cfg.gp
         /// <summary>
         /// 无
         /// </summary>
-        None = 1,
+        None = 0,
         /// <summary>
         /// 随机
         /// </summary>
-        Random = 2,
+        Random = 1,
         /// <summary>
         /// 最近
         /// </summary>
-        Nearest = 3,
+        Nearest = 2,
         /// <summary>
         /// 最远
         /// </summary>
-        Farest = 4,
+        Farest = 3,
         /// <summary>
         /// 对位
         /// </summary>
-        Match = 5,
+        Match = 4,
         /// <summary>
         /// 全体
         /// </summary>
-        All = 6,
+        All = 5,
         /// <summary>
         /// 自己
         /// </summary>
-        Self = 7,
+        Self = 6,
         /// <summary>
         /// 属性最低
         /// </summary>
-        AttrLowest = 8,
+        AttrLowest = 7,
         /// <summary>
         /// 属性最高
         /// </summary>
-        AttrHighest = 9,
+        AttrHighest = 8,
     }
 
 } 

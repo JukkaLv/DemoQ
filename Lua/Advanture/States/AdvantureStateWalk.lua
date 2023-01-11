@@ -27,7 +27,7 @@ end
 function AdvantureStateWalk:OnUpdate(deltaTime)
     -- 监测抵达终点
     local vcameraTargetPos = advantureInst.actors[1]:GetPosition()
-    virtualCameraTarget.position = vcameraTargetPos
+    virtualCameraTarget.position = Vector3(vcameraTargetPos.x, CAMERA_GROUND_Y, vcameraTargetPos.z)
     if vcameraTargetPos.x >= self.goalPosX then
         advantureInst.fsm:Switch("SUPRISE")
     end

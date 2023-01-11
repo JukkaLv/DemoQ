@@ -1,12 +1,12 @@
 <module name="gp">
     <!-- Value Compare -->
     <enum name="E_ValueCompare">
-        <var name="Equal" alias="等于" value="1"/>
-        <var name="NEqual" alias="不等于" value="2"/>
-        <var name="Greater" alias="大于" value="3"/>
-        <var name="GEqual" alias="大于等于" value="4"/>
-        <var name="Less" alias="小于" value="5"/>
-        <var name="LEqual" alias="小于等于" value="6"/>
+        <var name="Equal" alias="等于"/>
+        <var name="NEqual" alias="不等于"/>
+        <var name="Greater" alias="大于"/>
+        <var name="GEqual" alias="大于等于"/>
+        <var name="Less" alias="小于"/>
+        <var name="LEqual" alias="小于等于"/>
     </enum>
     <!-- Element Types -->
     <enum name="E_Element" flags="1">
@@ -26,18 +26,18 @@
     </enum>
     <!-- Battle Attribute -->
     <enum name="E_BattleAttribute">
-        <var name="Hp" alias="生命" value="0"/>
-        <var name="HpPer" alias="生命比例" value="1"/>
-        <var name="MaxHp" alias="最大生命" value="2"/>
-        <var name="Atk" alias="物攻" value="3"/>
-        <var name="Def" alias="物防" value="4"/>
-        <var name="MAtk" alias="魔攻" value="5"/>
-        <var name="MDef" alias="魔防" value="6"/>
-        <var name="Spd" alias="速度" value="7"/>
+        <var name="Hp" alias="生命"/>
+        <var name="HpPer" alias="生命比例"/>
+        <var name="MaxHp" alias="最大生命"/>
+        <var name="Atk" alias="物攻"/>
+        <var name="Def" alias="物防"/>
+        <var name="MAtk" alias="魔攻"/>
+        <var name="MDef" alias="魔防"/>
+        <var name="Spd" alias="速度"/>
     </enum>
     <enum name="E_BattleSkillType">
-        <var name="Normal" alias="普通技能" value="0"/>
-        <var name="Slot" alias="转盘技能" value="1"/>
+        <var name="Normal" alias="普通技能"/>
+        <var name="Slot" alias="转盘技能"/>
     </enum>
 
     <!-- Target Filter -->
@@ -71,17 +71,37 @@
     </bean>
     <!-- Target Selector Position Module -->
     <enum name="E_TS_Method">
-        <var name="None" alias="无" value="1"/>
-        <var name="Random" alias="随机" value="2"/>
-        <var name="Nearest" alias="最近" value="3"/>
-        <var name="Farest" alias="最远" value="4"/>
-        <var name="Match" alias="对位" value="5"/>
-        <var name="All" alias="全体" value="6"/>
-        <var name="Self" alias="自己" value="7"/>
-        <var name="AttrLowest" alias="属性最低" value="8"/>
-        <var name="AttrHighest" alias="属性最高" value="9"/>
+        <var name="None" alias="无"/>
+        <var name="Random" alias="随机"/>
+        <var name="Nearest" alias="最近"/>
+        <var name="Farest" alias="最远"/>
+        <var name="Match" alias="对位"/>
+        <var name="All" alias="全体"/>
+        <var name="Self" alias="自己"/>
+        <var name="AttrLowest" alias="属性最低"/>
+        <var name="AttrHighest" alias="属性最高"/>
     </enum>
+
+    <!-- Advanture Event -->
+    <enum name="E_ADV_EVT_TYPE">
+        <var name="Chest"/>
+        <var name="Battle"/>
+        <var name="Dialog"/>
+    </enum>
+    <bean name="B_ADV_EVT">
+        <bean name="B_ADV_EVT_CHEST">
+            <var name="chestModel" type="string"/>
+            <var name="coin" type="int"/>
+        </bean>
+        <bean name="B_ADV_EVT_BATTLE">
+            <var name="enemies" type="(list#sep=|),(int#ref=gp.TblActor)"/>
+        </bean>
+        <bean name="B_ADV_EVT_DIALOG">
+            <var name="dialog" type="string"/>
+        </bean>
+    </bean>
 
     <table name="TblActor" value="Actor" define_from_file="true"  mode="map" index="id" input="Gameplay/Actor.xlsx"/>
     <table name="TblSkill" value="Skill" define_from_file="true" mode="map" index="id" input="Gameplay/Skill.xlsx"/>
+    <table name="TblAdvantureSlot" value="AdvantureSlot" define_from_file="true" mode="map" index="id" input="Gameplay/AdvantureSlot.xlsx"/>
 </module>

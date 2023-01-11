@@ -2,7 +2,7 @@
 local Notifier = require 'Framework.Notifier'
 local SlotSkillTipItemView = {}
 SlotSkillTipItemView.__index = SlotSkillTipItemView
-SlotSkillTipItemView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/ItemView_SlotSkillTip.prefab'
+SlotSkillTipItemView.__PREFAB_ASSET = 'Assets/Demo/Resources/Views/SlotSkillTipItemView.prefab'
 function SlotSkillTipItemView.Create(facade, inherit)
 	local copy = {}
 	setmetatable(copy, SlotSkillTipItemView)
@@ -16,7 +16,8 @@ end
 function SlotSkillTipItemView:Init(facade)
 	assert(facade ~= nil, 'Error! SlotSkillTipItemView facade is nil')
 	facade:SetComps(self)
-	self.viewName = facade.viewName
+	self.viewName = 'SlotSkillTipItemView'
+	self.viewTblPath = { 'SlotSkillTipItemView' }
 	self.gameObject = facade.gameObject
 	self.transform = facade.transform
 	self.elements_ItemTemplate = nil
@@ -46,7 +47,7 @@ function SlotSkillTipItemView:Dispose()
 end
 
 function SlotSkillTipItemView:Render(viewModel)
-	assert(viewModel ~= nil, 'Error! SlotSkillTipItemView view model is nil')
+	 if type(viewModel) ~= 'table' then return end
 	if viewModel.elements ~= nil then
 		if viewModel.elements.items ~= nil then
 			assert(self.elements_ItemTemplate ~= nil, 'SlotSkillTipItemView.elements item template is nil')
@@ -59,7 +60,12 @@ function SlotSkillTipItemView:Render(viewModel)
 				self.__elements_POOL[i].gameObject:SetActive(false)
 			end
 			for i=minLen+1,#viewModel.elements.items do
-				local ITEM_VIEW = require('MVC.View.'..self.elements_ItemTemplate.viewName)
+				local ITEM_VIEW = require('MVC.View.'..self.elements_ItemTemplate.viewTblPath[1])
+				if #self.elements_ItemTemplate.viewTblPath > 1 then
+					for j=2, #self.elements_ItemTemplate.viewTblPath do
+						ITEM_VIEW = ITEM_VIEW[self.elements_ItemTemplate.viewTblPath[j]]
+					end
+				end
 				local itemViewGO = GameObject.Instantiate(self.elements_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.elements.transform)
 				local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'), self.elements_ItemTemplate)
 				table.insert(self.__elements_POOL, itemView)

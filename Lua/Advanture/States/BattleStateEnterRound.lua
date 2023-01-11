@@ -30,9 +30,8 @@ function BattleStateEnterRound:OnEnter()
                     alreadyIn = true
                     break
                 end
-                if actor.context.class > inlistActor.context.class or -- 阶层优先
-                   actor.context.class == inlistActor.context.class and actor.spd > inlistActor.spd or    -- 其次速度
-                   actor.context.class == inlistActor.context.class and actor.spd == inlistActor.spd and actor.camp == 1 then  -- 最后攻防先动
+                if actor.spd > inlistActor.spd or    -- 其次速度
+                   actor.spd == inlistActor.spd and actor.camp == 1 then  -- 最后攻防先动  -- todo 行动顺序
                     table.insert(battleInst.sortedActionActors, i, actor)
                     inserted = true
                     break
@@ -61,7 +60,7 @@ end
 function BattleStateEnterRound:OnUpdate(deltaTime)
     if not self.allLogicDone then
         if self.waitingForActionDone then -- 等待buff产生的action执行完毕
-            if TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
+            if CommonUtils.TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
                 self.waitingForActionDone = false -- action执行完毕，继续buff逻辑遍历
                 return
             end

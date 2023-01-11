@@ -2,7 +2,7 @@
 local Notifier = require 'Framework.Notifier'
 local ElementView = {}
 ElementView.__index = ElementView
-ElementView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/View_Element.prefab'
+ElementView.__PREFAB_ASSET = 'Assets/Demo/Resources/Views/ElementView.prefab'
 function ElementView.Create(facade, inherit)
 	local copy = {}
 	setmetatable(copy, ElementView)
@@ -15,7 +15,8 @@ end
 function ElementView:Init(facade)
 	assert(facade ~= nil, 'Error! ElementView facade is nil')
 	facade:SetComps(self)
-	self.viewName = facade.viewName
+	self.viewName = 'ElementView'
+	self.viewTblPath = { 'ElementView' }
 	self.gameObject = facade.gameObject
 	self.transform = facade.transform
 end
@@ -43,7 +44,7 @@ function ElementView:Dispose()
 end
 
 function ElementView:Render(viewModel)
-	assert(viewModel ~= nil, 'Error! ElementView view model is nil')
+	 if type(viewModel) ~= 'table' then return end
 	if viewModel.img_icon ~= nil then
 		if viewModel.img_icon.enabled ~= nil then self.img_icon.enabled = viewModel.img_icon.enabled end
 		if viewModel.img_icon.color ~= nil then self.img_icon.color = viewModel.img_icon.color end

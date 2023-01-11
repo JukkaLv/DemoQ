@@ -15,6 +15,7 @@ public partial class Tables
 {
     public gp.TblActor TblActor {get; }
     public gp.TblSkill TblSkill {get; }
+    public gp.TblAdvantureSlot TblAdvantureSlot {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -23,10 +24,13 @@ public partial class Tables
         tables.Add("gp.TblActor", TblActor);
         TblSkill = new gp.TblSkill(loader("gp_tblskill")); 
         tables.Add("gp.TblSkill", TblSkill);
+        TblAdvantureSlot = new gp.TblAdvantureSlot(loader("gp_tbladvantureslot")); 
+        tables.Add("gp.TblAdvantureSlot", TblAdvantureSlot);
 
         PostInit();
         TblActor.Resolve(tables); 
         TblSkill.Resolve(tables); 
+        TblAdvantureSlot.Resolve(tables); 
         PostResolve();
     }
 
@@ -34,6 +38,7 @@ public partial class Tables
     {
         TblActor.TranslateText(translator); 
         TblSkill.TranslateText(translator); 
+        TblAdvantureSlot.TranslateText(translator); 
     }
     
     partial void PostInit();

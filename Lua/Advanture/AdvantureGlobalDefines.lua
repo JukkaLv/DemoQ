@@ -6,7 +6,8 @@ Action = require 'Advanture.Actions.Action'
 Buff = require 'Advanture.Buffs.Buff'
 
 -- 探索中的一些常量
-GROUND_Y = -1.5     -- 地面在画面中Y轴的高度
+CAMERA_GROUND_Y = -1.5    -- 地面在画面中Y轴的高度(相机)
+ACTOR_GROUND_Y = -3.1     -- 地面在画面中Y轴的高度(角色)
 BATTLE_FIELD_WIDTH = 17    -- 战斗场地X轴世界宽度(米)
 BATTLE_FIELD_GRIDS = 10    -- 战斗场地格子数
 SINGLE_GRID_WIDTH = BATTLE_FIELD_WIDTH / BATTLE_FIELD_GRIDS  -- 单格宽度
@@ -245,23 +246,6 @@ end
 -----------------------------------------------------------
 
 --## 其他通用方法 ------------------------------------------
--- 遍历判断条件
-function TestEverybodyInList(list, testfunc, tester, mode) -- mode 1全部满足, 2任意满足
-    local result = mode == 1
-    for _,body in ipairs(list) do
-        local b
-        if tester == nil then b = testfunc(body)
-        else b = testfunc(tester, body) end
-
-        if mode == 1 then result = result and b
-        else result = result or b end
-
-        -- 短路一下，节省计算
-        if mode == 1 and result == false then return false end
-        if mode == 2 and result == true then return true end
-    end
-    return result
-end
 function CheckActorState_IDLE_or_DEAD(actor)
     return actor.fsm.currStateName == "IDLE" or actor.fsm.currStateName == "DEAD"
 end

@@ -31,7 +31,7 @@ end
 
 function AdvantureStateSuprise:OnUpdate(deltaTime)
     if self.delayTime == nil then
-        if TestEverybodyInList(advantureInst.actors, self.CheckActorState, self, 1) then
+        if CommonUtils.TestEverybodyInList(advantureInst.actors, self.CheckActorState, self, 1) then
             self.delayTime = 0.5 -- 所有人状态都OK后，启动延迟
         end
     else

@@ -23,6 +23,7 @@ function MVCFacade.RegisterController(CONTROLLER_NAME)
     local CONTROLLER = require('MVC.Controller.'..CONTROLLER_NAME)
     controller = CONTROLLER.Create()
     controllers[CONTROLLER_NAME] = controller
+    return controller
 end
 
 function MVCFacade.UnregisterController(CONTROLLER_NAME)

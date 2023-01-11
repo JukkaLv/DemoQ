@@ -21,7 +21,7 @@ function BattleStateEnterActor:OnEnter(actor)
     self.actor = actor
     -- 角色行动前镜头偏移一下
     local camPosX = BattleCameraFocusWorldXByActor(actor)
-    local battleFieldCenter = Vector3(camPosX, GROUND_Y, 0)
+    local battleFieldCenter = Vector3(camPosX, CAMERA_GROUND_Y, 0)
     virtualCameraTarget:DOMove(battleFieldCenter, 0.5)
 
     self.loopBuffIdx = 1
@@ -32,7 +32,7 @@ end
 function BattleStateEnterActor:OnUpdate(deltaTime)
     if not self.allLogicDone then
         if self.waitingForActionDone then -- 等待buff产生的action执行完毕
-            if TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
+            if CommonUtils.TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
                 self.waitingForActionDone = false -- action执行完毕，继续buff逻辑遍历
                 return
             end

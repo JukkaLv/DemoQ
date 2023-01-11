@@ -2,7 +2,7 @@
 local Notifier = require 'Framework.Notifier'
 local SelectHeroItemView = {}
 SelectHeroItemView.__index = SelectHeroItemView
-SelectHeroItemView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/ItemView_SelectHero.prefab'
+SelectHeroItemView.__PREFAB_ASSET = 'Assets/Demo/Resources/Views/SelectHeroItemView.prefab'
 
 function SelectHeroItemView.Create(facade, inherit)
 	local copy = {}
@@ -16,7 +16,8 @@ end
 function SelectHeroItemView:Init(facade)
 	assert(facade ~= nil, 'Error! SelectHeroItemView facade is nil')
 	facade:SetComps(self)
-	self.viewName = facade.viewName
+	self.viewName = 'SelectHeroItemView'
+	self.viewTblPath = { 'SelectHeroItemView' }
 	self.gameObject = facade.gameObject
 	self.transform = facade.transform
 	self.btn_root_OnClick = nil
@@ -40,7 +41,7 @@ function SelectHeroItemView:Init(facade)
 end
 
 function SelectHeroItemView:Render(viewModel)
-	assert(viewModel ~= nil, 'Error! SelectHeroItemView view model is nil')
+	 if type(viewModel) ~= 'table' then return end
 	if viewModel.btn_root ~= nil then
 		if viewModel.btn_root.enabled ~= nil then self.btn_root.enabled = viewModel.btn_root.enabled end
 		if viewModel.btn_root.interactable ~= nil then self.btn_root.interactable = viewModel.btn_root.interactable end
@@ -85,6 +86,11 @@ function SelectHeroItemView:Render(viewModel)
 		if viewModel.txt_skill_2.enabled ~= nil then self.txt_skill_2.enabled = viewModel.txt_skill_2.enabled end
 		if viewModel.txt_skill_2.text ~= nil then self.txt_skill_2.text = viewModel.txt_skill_2.text end
 		if viewModel.txt_skill_2.color ~= nil then self.txt_skill_2.color = viewModel.txt_skill_2.color end
+	end
+	if viewModel.img_check ~= nil then
+		if viewModel.img_check.enabled ~= nil then self.img_check.enabled = viewModel.img_check.enabled end
+		if viewModel.img_check.color ~= nil then self.img_check.color = viewModel.img_check.color end
+		if viewModel.img_check.sprite ~= nil then self.img_check.sprite = viewModel.img_check.sprite end
 	end
 end
 

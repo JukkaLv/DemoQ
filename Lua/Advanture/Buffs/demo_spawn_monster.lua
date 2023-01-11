@@ -14,8 +14,8 @@ function Buff:OnExitRound()
             local actorContext = {}
             actorContext.coord = coord
             actorContext.cfgID = 202
-            actorContext.camp = 2
-            actorContext.class = 0
+            actorContext.camp = Cfg.GetEnum('gp.E_BattleCamp', 'Opp')
+            actorContext.isMaster = false
             return Action.Create("simple_spawn_actor", self.owner, nil, nil, 0.25, actorContext)
         end
     end

@@ -2,7 +2,7 @@
 local Notifier = require 'Framework.Notifier'
 local SkillTipView = {}
 SkillTipView.__index = SkillTipView
-SkillTipView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/TipView_Skill.prefab'
+SkillTipView.__PREFAB_ASSET = 'Assets/Demo/Resources/Views/SkillTipView.prefab'
 function SkillTipView.Create(facade, inherit)
 	local copy = {}
 	setmetatable(copy, SkillTipView)
@@ -16,7 +16,8 @@ end
 function SkillTipView:Init(facade)
 	assert(facade ~= nil, 'Error! SkillTipView facade is nil')
 	facade:SetComps(self)
-	self.viewName = facade.viewName
+	self.viewName = 'SkillTipView'
+	self.viewTblPath = { 'SkillTipView' }
 	self.gameObject = facade.gameObject
 	self.transform = facade.transform
 	self.btn_bg_OnClick = nil
@@ -52,7 +53,7 @@ function SkillTipView:Dispose()
 end
 
 function SkillTipView:Render(viewModel)
-	assert(viewModel ~= nil, 'Error! SkillTipView view model is nil')
+	 if type(viewModel) ~= 'table' then return end
 	if viewModel.btn_bg ~= nil then
 		if viewModel.btn_bg.enabled ~= nil then self.btn_bg.enabled = viewModel.btn_bg.enabled end
 		if viewModel.btn_bg.interactable ~= nil then self.btn_bg.interactable = viewModel.btn_bg.interactable end
@@ -90,7 +91,12 @@ function SkillTipView:Render(viewModel)
 				self.__elements_POOL[i].gameObject:SetActive(false)
 			end
 			for i=minLen+1,#viewModel.elements.items do
-				local ITEM_VIEW = require('MVC.View.'..self.elements_ItemTemplate.viewName)
+				local ITEM_VIEW = require('MVC.View.'..self.elements_ItemTemplate.viewTblPath[1])
+				if #self.elements_ItemTemplate.viewTblPath > 1 then
+					for j=2, #self.elements_ItemTemplate.viewTblPath do
+						ITEM_VIEW = ITEM_VIEW[self.elements_ItemTemplate.viewTblPath[j]]
+					end
+				end
 				local itemViewGO = GameObject.Instantiate(self.elements_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.elements.transform)
 				local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'), self.elements_ItemTemplate)
 				table.insert(self.__elements_POOL, itemView)

@@ -108,7 +108,7 @@ namespace Framework.LuaMVC.Editor
             GameObject go = null;
             if (obj is GameObject) go = (GameObject)obj;
             else if (obj is Transform) go = ((Transform)obj).gameObject;
-            else go = ((MonoBehaviour)obj).gameObject;
+            else if (obj != null) go = ((MonoBehaviour)obj).gameObject;
             
             if (go != null)
             {

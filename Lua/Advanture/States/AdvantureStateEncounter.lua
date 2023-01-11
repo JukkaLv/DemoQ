@@ -51,7 +51,7 @@ function AdvantureStateEncounter:PrepareEvent_Battle(wave)
     end
     
     -- 镜头对准战场中间
-    local battleFieldCenter = Vector3(BattleCenterWorldX(), GROUND_Y, 0)
+    local battleFieldCenter = Vector3(BattleCenterWorldX(), CAMERA_GROUND_Y, 0)
     virtualCameraTarget:DOMove(battleFieldCenter, 1):OnComplete(function()
         self.battle = require('Advanture.Battle').Create(battleContext, advantureInst)
     end)

@@ -35,7 +35,7 @@ end
 function BattleStateStart:OnUpdate(deltaTime)
     if not self.allLogicDone then
         if self.waitingForActionDone then -- 等待开场技能action执行完毕
-            if TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
+            if CommonUtils.TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
                 self.waitingForActionDone = false -- action执行完毕，继续逻辑遍历
                 return
             end

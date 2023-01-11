@@ -17,9 +17,9 @@ function AdvantureStateStart:OnEnter()
     -- 暂时没什么事干，初始化一下队伍位置
     local startOffset = -16
     for _,actor in ipairs(advantureInst.actors) do
-        actor:SetPosition(Vector3(startOffset, GROUND_Y, 0))
+        actor:SetPosition(Vector3(startOffset, ACTOR_GROUND_Y, 0))
     end
-    virtualCameraTarget.position = Vector3(0, GROUND_Y, 0)
+    virtualCameraTarget.position = Vector3(0, CAMERA_GROUND_Y, 0)
 
     advantureInst.fsm:Switch("LINEUP")
 end

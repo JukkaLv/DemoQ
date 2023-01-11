@@ -1,11 +1,11 @@
 -- 本脚本为自动生成，不要手动修改，以免被覆盖
 local Notifier = require 'Framework.Notifier'
-local BeginAdvanturePanelView = {}
-BeginAdvanturePanelView.__index = BeginAdvanturePanelView
-BeginAdvanturePanelView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/PanelView_BeginAdvanture.prefab'
-function BeginAdvanturePanelView.Create(facade, inherit)
+local AdvanturePrepareView = {}
+AdvanturePrepareView.__index = AdvanturePrepareView
+AdvanturePrepareView.__PREFAB_ASSET = 'Assets/Demo/Resources/Views/AdvanturePrepareView.prefab'
+function AdvanturePrepareView.Create(facade, inherit)
 	local copy = {}
-	setmetatable(copy, BeginAdvanturePanelView)
+	setmetatable(copy, AdvanturePrepareView)
 	copy:Init(facade)
 	if inherit ~= nil then
 		copy.bottom_ItemTemplate = inherit.bottom_ItemTemplate
@@ -13,10 +13,11 @@ function BeginAdvanturePanelView.Create(facade, inherit)
 	return copy
 end
 
-function BeginAdvanturePanelView:Init(facade)
-	assert(facade ~= nil, 'Error! BeginAdvanturePanelView facade is nil')
+function AdvanturePrepareView:Init(facade)
+	assert(facade ~= nil, 'Error! AdvanturePrepareView facade is nil')
 	facade:SetComps(self)
-	self.viewName = facade.viewName
+	self.viewName = 'AdvanturePrepareView'
+	self.viewTblPath = { 'AdvanturePrepareView' }
 	self.gameObject = facade.gameObject
 	self.transform = facade.transform
 	self.btn_slotSkills_OnClick = nil
@@ -59,30 +60,30 @@ function BeginAdvanturePanelView:Init(facade)
 	end)
 end
 
-function BeginAdvanturePanelView:Open(viewModel)
-	assert(self.gameObject ~= nil, 'Error! BeginAdvanturePanelView has been disposed.')
+function AdvanturePrepareView:Open(viewModel)
+	assert(self.gameObject ~= nil, 'Error! AdvanturePrepareView has been disposed.')
 	Notifier.Dispatch('__OPEN_VIEW_BEFORE', self)
 	self.gameObject:SetActive(true)
 	if viewModel ~= nil then self:Render(viewModel) end
 	Notifier.Dispatch('__OPEN_VIEW_AFTER', self)
 end
 
-function BeginAdvanturePanelView:Close()
-	assert(self.gameObject ~= nil, 'Error! BeginAdvanturePanelView has been disposed.')
+function AdvanturePrepareView:Close()
+	assert(self.gameObject ~= nil, 'Error! AdvanturePrepareView has been disposed.')
 	Notifier.Dispatch('__CLOSE_VIEW_BEFORE', self)
 	self.gameObject:SetActive(false)
 	Notifier.Dispatch('__CLOSE_VIEW_AFTER', self)
 end
 
-function BeginAdvanturePanelView:Dispose()
-	assert(self.gameObject ~= nil, 'Error! BeginAdvanturePanelView has been disposed.')
+function AdvanturePrepareView:Dispose()
+	assert(self.gameObject ~= nil, 'Error! AdvanturePrepareView has been disposed.')
 	GameObject.Destroy(self.gameObject)
 	self.gameObject = nil
 	self.transform = nil
 end
 
-function BeginAdvanturePanelView:Render(viewModel)
-	assert(viewModel ~= nil, 'Error! BeginAdvanturePanelView view model is nil')
+function AdvanturePrepareView:Render(viewModel)
+	 if type(viewModel) ~= 'table' then return end
 	if viewModel.btn_slotSkills ~= nil then
 		if viewModel.btn_slotSkills.enabled ~= nil then self.btn_slotSkills.enabled = viewModel.btn_slotSkills.enabled end
 		if viewModel.btn_slotSkills.interactable ~= nil then self.btn_slotSkills.interactable = viewModel.btn_slotSkills.interactable end
@@ -130,7 +131,7 @@ function BeginAdvanturePanelView:Render(viewModel)
 	end
 	if viewModel.bottom ~= nil then
 		if viewModel.bottom.items ~= nil then
-			assert(self.bottom_ItemTemplate ~= nil, 'BeginAdvanturePanelView.bottom item template is nil')
+			assert(self.bottom_ItemTemplate ~= nil, 'AdvanturePrepareView.bottom item template is nil')
 			local minLen = math.min(#self.__bottom_POOL, #viewModel.bottom.items)
 			for i=1,minLen do
 				self.__bottom_POOL[i].gameObject:SetActive(true)
@@ -140,7 +141,12 @@ function BeginAdvanturePanelView:Render(viewModel)
 				self.__bottom_POOL[i].gameObject:SetActive(false)
 			end
 			for i=minLen+1,#viewModel.bottom.items do
-				local ITEM_VIEW = require('MVC.View.'..self.bottom_ItemTemplate.viewName)
+				local ITEM_VIEW = require('MVC.View.'..self.bottom_ItemTemplate.viewTblPath[1])
+				if #self.bottom_ItemTemplate.viewTblPath > 1 then
+					for j=2, #self.bottom_ItemTemplate.viewTblPath do
+						ITEM_VIEW = ITEM_VIEW[self.bottom_ItemTemplate.viewTblPath[j]]
+					end
+				end
 				local itemViewGO = GameObject.Instantiate(self.bottom_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.bottom.transform)
 				local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'), self.bottom_ItemTemplate)
 				table.insert(self.__bottom_POOL, itemView)
@@ -177,4 +183,4 @@ function BeginAdvanturePanelView:Render(viewModel)
 	end
 end
 
-return BeginAdvanturePanelView
+return AdvanturePrepareView

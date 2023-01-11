@@ -14,27 +14,27 @@ namespace cfg.gp
         /// <summary>
         /// 等于
         /// </summary>
-        Equal = 1,
+        Equal = 0,
         /// <summary>
         /// 不等于
         /// </summary>
-        NEqual = 2,
+        NEqual = 1,
         /// <summary>
         /// 大于
         /// </summary>
-        Greater = 3,
+        Greater = 2,
         /// <summary>
         /// 大于等于
         /// </summary>
-        GEqual = 4,
+        GEqual = 3,
         /// <summary>
         /// 小于
         /// </summary>
-        Less = 5,
+        Less = 4,
         /// <summary>
         /// 小于等于
         /// </summary>
-        LEqual = 6,
+        LEqual = 5,
     }
 
 } 

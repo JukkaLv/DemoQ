@@ -41,14 +41,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: ParallaxSky
+  - name: ParallaxBG
     uniqueID: 2356914395
-    locked: 0
-  - name: ParallaxGround
-    uniqueID: 1228182283
     locked: 0
   - name: ParallaxBack
     uniqueID: 1997712785
+    locked: 0
+  - name: ParallaxGround
+    uniqueID: 1228182283
     locked: 0
   - name: ParallaxObject
     uniqueID: 3688990751

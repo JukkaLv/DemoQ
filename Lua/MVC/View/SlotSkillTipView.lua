@@ -2,7 +2,7 @@
 local Notifier = require 'Framework.Notifier'
 local SlotSkillTipView = {}
 SlotSkillTipView.__index = SlotSkillTipView
-SlotSkillTipView.__PREFAB_ASSET = 'Assets/Demo/Resources/UI/TipView_SlotSkills.prefab'
+SlotSkillTipView.__PREFAB_ASSET = 'Assets/Demo/Resources/Views/SlotSkillTipView.prefab'
 function SlotSkillTipView.Create(facade, inherit)
 	local copy = {}
 	setmetatable(copy, SlotSkillTipView)
@@ -16,7 +16,8 @@ end
 function SlotSkillTipView:Init(facade)
 	assert(facade ~= nil, 'Error! SlotSkillTipView facade is nil')
 	facade:SetComps(self)
-	self.viewName = facade.viewName
+	self.viewName = 'SlotSkillTipView'
+	self.viewTblPath = { 'SlotSkillTipView' }
 	self.gameObject = facade.gameObject
 	self.transform = facade.transform
 	self.btn_bg_OnClick = nil
@@ -52,7 +53,7 @@ function SlotSkillTipView:Dispose()
 end
 
 function SlotSkillTipView:Render(viewModel)
-	assert(viewModel ~= nil, 'Error! SlotSkillTipView view model is nil')
+	 if type(viewModel) ~= 'table' then return end
 	if viewModel.btn_bg ~= nil then
 		if viewModel.btn_bg.enabled ~= nil then self.btn_bg.enabled = viewModel.btn_bg.enabled end
 		if viewModel.btn_bg.interactable ~= nil then self.btn_bg.interactable = viewModel.btn_bg.interactable end
@@ -70,7 +71,12 @@ function SlotSkillTipView:Render(viewModel)
 				self.__content_POOL[i].gameObject:SetActive(false)
 			end
 			for i=minLen+1,#viewModel.content.items do
-				local ITEM_VIEW = require('MVC.View.'..self.content_ItemTemplate.viewName)
+				local ITEM_VIEW = require('MVC.View.'..self.content_ItemTemplate.viewTblPath[1])
+				if #self.content_ItemTemplate.viewTblPath > 1 then
+					for j=2, #self.content_ItemTemplate.viewTblPath do
+						ITEM_VIEW = ITEM_VIEW[self.content_ItemTemplate.viewTblPath[j]]
+					end
+				end
 				local itemViewGO = GameObject.Instantiate(self.content_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.content.transform)
 				local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'), self.content_ItemTemplate)
 				table.insert(self.__content_POOL, itemView)

@@ -32,7 +32,7 @@ function BattleStateDoActor:OnEnter(actor, skill, targets, newCoord)
 end
 
 function BattleStateDoActor:OnUpdate(deltaTime)
-    if TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
+    if CommonUtils.TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
         battleInst.fsm:Switch('EXITACTOR', self.actor)
     end
 end

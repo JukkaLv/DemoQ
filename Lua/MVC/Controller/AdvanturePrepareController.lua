@@ -1,23 +1,24 @@
-local BeginAdvantureController = {}
-BeginAdvantureController.__index = BeginAdvantureController
+local AdvanturePrepareController = {}
+AdvanturePrepareController.__index = AdvanturePrepareController
 local ControllerBase = require 'MVC.Controller.ControllerBase'
-setmetatable(BeginAdvantureController, ControllerBase)
+setmetatable(AdvanturePrepareController, ControllerBase)
 
 local Notifier = require 'Framework.Notifier'
-local cfg = require 'config.Cfg'
 
-function BeginAdvantureController.Create()
+function AdvanturePrepareController.Create()
     local copy = {}
-    setmetatable(copy, BeginAdvantureController)
+    setmetatable(copy, AdvanturePrepareController)
     copy:InitBase()
     copy:Init()
     return copy
 end
 
-function BeginAdvantureController:Init()
-    self.panelView = self:LoadView("BeginAdvanturePanelView")
+function AdvanturePrepareController:Init()
+    self.choosedHeros = {0, 0, 0, 0}
+    self.panelView = self:LoadView("AdvanturePrepareView")
     self.slotSkillTipView = self:LoadView("SlotSkillTipView")
     self.skillTipView = self:LoadView("SkillTipView")
+
     local itemView = self:LoadView("SelectHeroItemView")
     local slotSkillTipItemView = self:LoadView("SlotSkillTipItemView")
     local elementView = self:LoadView("ElementView")
@@ -39,29 +40,71 @@ function BeginAdvantureController:Init()
 
     Notifier.AddListener("SHOW_SKILL_TIP", self.OnShowSkillTip, self)
     Notifier.AddListener("CHOOSE_HERO", self.OnChooseHero, self)
-
-    self.choosedHeros = {0, 0, 0, 0}
+    Notifier.AddListener("SHOW_ADVANTURE_PREPARE_VIEW", self.ShowPanel, self)
 end
 
-function BeginAdvantureController:Dispose()
+function AdvanturePrepareController:Dispose()
     Notifier.RemoveListener("SHOW_SKILL_TIP", self.OnShowSkillTip, self)
     Notifier.RemoveListener("CHOOSE_HERO", self.OnChooseHero, self)
+    Notifier.RemoveListener("SHOW_ADVANTURE_PREPARE_VIEW", self.ShowPanel, self)
 
     self:UnloadAllViews()
 
+    self.panelView:Close()
+    self.slotSkillTipView:Close()
+    self.skillTipView:Close()
+
+    self.choosedHeros = nil
+    self.panelVM = nil
     self.panelView = nil
     self.slotSkillTipView = nil
+    self.skillTipView = nil
 end
 
-function BeginAdvantureController:ShowPanel(vm)
+function AdvanturePrepareController:ShowPanel()
+    local vm = {}
+    vm.img_role_1 = { enabled = false }
+    vm.img_role_2 = { enabled = false }
+    vm.img_role_3 = { enabled = false }
+    vm.img_role_4 = { enabled = false }
+    vm.btn_go = { interactable = false }
+
+    vm.bottom = { items = {} }
+    for id=102,107 do
+        local actorTbl = Cfg.GetData("TblActor", id)
+        local vm_item = {}
+        vm_item.actorTblId = id
+        vm_item.txt_name = { text = actorTbl.name }
+        vm_item.txt_hp = { text = "生命值:"..actorTbl.maxHP }
+        vm_item.txt_spd = { text = "速度:"..actorTbl.speed }
+        vm_item.img_element = { sprite = ViewUtils.GetElementSprite(actorTbl.element) }
+
+        local skillTbl1 = Cfg.GetData("TblSkill", actorTbl.skills[1])
+        vm_item.txt_skill_1 = { text = skillTbl1.name }
+        vm_item.btn_skill_1 = { OnClickNoti = { name = "SHOW_SKILL_TIP", body = { skillTbl1 } } }
+        
+        local skillTbl2 = Cfg.GetData("TblSkill", actorTbl.skills[2])
+        vm_item.txt_skill_2 = { text = skillTbl2.name }
+        vm_item.btn_skill_2 = { OnClickNoti = { name = "SHOW_SKILL_TIP", body = { skillTbl2 } } }
+
+        vm_item.btn_root = { OnClickNoti = { name = "CHOOSE_HERO", body = { actorTbl, #vm.bottom.items + 1 } } }
+        vm_item.img_check = { enabled = false }
+
+        table.insert(vm.bottom.items, vm_item)
+    end
+
+    self.panelVM = vm
     self.panelView:Open(vm)
 end
 
-function BeginAdvantureController:OnBtnGo()
-    self.panelView:Close()
+function AdvanturePrepareController:OnBtnGo()
+    table.insert(self.choosedHeros, 1, 101) -- 塞入master
+    
+    -- todo Move to Game FSM
+    MVCFacade.ExcuteCommand('CmdGotoAdvanture', self.choosedHeros)
 end
 
-function BeginAdvantureController:OnShowSkillTip(notiData)
+function AdvanturePrepareController:OnShowSkillTip(notiData)
     local skillTbl = notiData[1]
     local vm = {}
     vm.txt_name = { text = skillTbl.name }
@@ -76,12 +119,12 @@ function BeginAdvantureController:OnShowSkillTip(notiData)
     self.skillTipView.trans_content.anchoredPosition = Vector2(Input.mousePosition.x, Input.mousePosition.y)
 end
 
-function BeginAdvantureController:OnShowSlotSkills()
-    local masterTbl = cfg.GetData("TblActor", 101)
+function AdvanturePrepareController:OnShowSlotSkills()
+    local masterTbl = Cfg.GetData("TblActor", 101)
     local vm = {}
     vm.content = { items = {} }
     for _,skillId in ipairs(masterTbl.skills) do
-        local skillTbl = cfg.GetData("TblSkill", skillId)
+        local skillTbl = Cfg.GetData("TblSkill", skillId)
         local item_vm = {}
         item_vm.txt_desc = { text = skillTbl.desc }
         item_vm.elements = { items = {} }
@@ -93,8 +136,9 @@ function BeginAdvantureController:OnShowSlotSkills()
     self.slotSkillTipView:Open(vm)
 end
 
-function BeginAdvantureController:OnChooseHero(notiData)
+function AdvanturePrepareController:OnChooseHero(notiData)
     local actorTbl = notiData[1]
+    local listIdx = notiData[2]
     local exist = false
     local firstEmptyIdx = 0
     for i,choosedActorId in ipairs(self.choosedHeros) do
@@ -113,21 +157,26 @@ function BeginAdvantureController:OnChooseHero(notiData)
             if choosedActorId == 0 then ready = false; break end
         end
         vm.btn_go = { interactable = ready }
-
+        vm.bottom = { items = CommonUtils.CreateArray(#self.panelVM.bottom.items, 0) }
+        vm.bottom.items[listIdx] = { img_check = { enabled = true } }
         self.panelView:Render(vm)
     end
 end
 
-function BeginAdvantureController:OnRemoveHero(idx)
-    if self.choosedHeros[idx] > 0 then
-        self.choosedHeros[idx] = 0
-        
+function AdvanturePrepareController:OnRemoveHero(pos)
+    local actorTblId = self.choosedHeros[pos]
+    if actorTblId > 0 then
+        self.choosedHeros[pos] = 0
+
         local vm = {}
-        vm["img_role_"..idx] = { enabled = false }
-        vm["label_"..idx] = { text = "未上阵" }
+        vm["img_role_"..pos] = { enabled = false }
+        vm["label_"..pos] = { text = "未上阵" }
         vm.btn_go = { interactable = false }
+        vm.bottom = { items = CommonUtils.CreateArray(#self.panelVM.bottom.items, 0) }
+        local listIdx = CommonUtils.IndexOf(self.panelVM.bottom.items, function(item_vm) return item_vm.actorTblId == actorTblId end)[1]
+        vm.bottom.items[listIdx] = { img_check = { enabled = false } }
         self.panelView:Render(vm)
     end
 end
 
-return BeginAdvantureController
+return AdvanturePrepareController

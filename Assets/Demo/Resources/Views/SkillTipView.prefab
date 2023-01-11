@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 7960298378993630522}
   - component: {fileID: 7960298378993630521}
   m_Layer: 5
-  m_Name: TipView_Skill
+  m_Name: SkillTipView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

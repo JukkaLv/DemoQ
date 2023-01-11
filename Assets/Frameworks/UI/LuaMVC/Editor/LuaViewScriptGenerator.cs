@@ -14,6 +14,7 @@ namespace Framework.LuaMVC.Editor
     public class LuaViewScriptGenerator
     {
         private static string LUA_VIEW_DIR = LuaGlobalDefine.LUA_ROOT_DIR + "MVC/View/";
+        private static LuaViewFacade topFacade;
 
         public static void Generate(LuaViewFacade facade)
         {
@@ -22,6 +23,8 @@ namespace Framework.LuaMVC.Editor
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.AppendLine("-- 本脚本为自动生成，不要手动修改，以免被覆盖");
             strBuilder.AppendLine("local Notifier = require 'Framework.Notifier'");
+
+            topFacade = facade;
 
             bool sucess;
             if (facade.subView) sucess = GenerateSubView(facade, ref strBuilder, false);
@@ -72,7 +75,7 @@ namespace Framework.LuaMVC.Editor
         {
             if (!ValidateFacade(facade)) return false;
 
-            string viewTblName = GetFacadeTblName(facade);
+            string viewTblName = GetFacadeTblName(facade, out List<string> viewTblPath);
 
             #region declare table
             strBuilder.AppendFormat("local {0} = ", viewTblName).AppendLine("{}");
@@ -101,7 +104,8 @@ namespace Framework.LuaMVC.Editor
             strBuilder.AppendFormat("function {0}:Init(facade)", viewTblName).AppendLine();
             strBuilder.Append("\t").AppendFormat("assert(facade ~= nil, 'Error! {0} facade is nil')", viewTblName).AppendLine();
             strBuilder.Append("\t").AppendLine("facade:SetComps(self)");
-            strBuilder.Append("\t").AppendLine("self.viewName = facade.viewName");
+            strBuilder.Append("\t").AppendLine($"self.viewName = '{facade.viewName}'");
+            strBuilder.Append("\t").AppendLine($"self.viewTblPath = {{ '{ string.Join("', '", viewTblPath) }' }}");
             strBuilder.Append("\t").AppendLine("self.gameObject = facade.gameObject");
             strBuilder.Append("\t").AppendLine("self.transform = facade.transform");
             strBuilder.Append(compsInitBuider);
@@ -142,7 +146,8 @@ namespace Framework.LuaMVC.Editor
 
             #region func Render
             strBuilder.AppendFormat("function {0}:Render(viewModel)", viewTblName).AppendLine();
-            strBuilder.Append("\t").AppendFormat("assert(viewModel ~= nil, 'Error! {0} view model is nil')", viewTblName).AppendLine();
+            // strBuilder.Append("\t").AppendFormat("assert(viewModel ~= nil, 'Error! {0} view model is nil')", viewTblName).AppendLine();
+            strBuilder.Append("\t").AppendLine(" if type(viewModel) ~= 'table' then return end");
             strBuilder.Append(compsRenderBuilder);
             strBuilder.AppendLine("end");
             strBuilder.AppendLine();
@@ -167,7 +172,7 @@ namespace Framework.LuaMVC.Editor
         {
             if (!ValidateFacade(facade)) return false;
 
-            string viewTblName = GetFacadeTblName(facade);
+            string viewTblName = GetFacadeTblName(facade, out List<string> viewTblPath);
             if (_viewTblNameSet.Contains(viewTblName))
             {
                 EditorUtility.DisplayDialog("Error!", "detected same name of sub facade: " + viewTblName, "OK");
@@ -203,7 +208,8 @@ namespace Framework.LuaMVC.Editor
             strBuilder.AppendFormat("function {0}:Init(facade)", viewTblName).AppendLine();
             strBuilder.Append("\t").AppendFormat("assert(facade ~= nil, 'Error! {0} facade is nil')", viewTblName).AppendLine();
             strBuilder.Append("\t").AppendLine("facade:SetComps(self)");
-            strBuilder.Append("\t").AppendLine("self.viewName = facade.viewName");
+            strBuilder.Append("\t").AppendLine($"self.viewName = '{facade.viewName}'");
+            strBuilder.Append("\t").AppendLine($"self.viewTblPath = {{ '{ string.Join("', '", viewTblPath) }' }}");
             strBuilder.Append("\t").AppendLine("self.gameObject = facade.gameObject");
             strBuilder.Append("\t").AppendLine("self.transform = facade.transform");
             strBuilder.Append(compsInitBuilder);
@@ -213,7 +219,8 @@ namespace Framework.LuaMVC.Editor
 
             #region func Render
             strBuilder.AppendFormat("function {0}:Render(viewModel)", viewTblName).AppendLine();
-            strBuilder.Append("\t").AppendFormat("assert(viewModel ~= nil, 'Error! {0} view model is nil')", viewTblName).AppendLine();
+            // strBuilder.Append("\t").AppendFormat("assert(viewModel ~= nil, 'Error! {0} view model is nil')", viewTblName).AppendLine();
+            strBuilder.Append("\t").AppendLine(" if type(viewModel) ~= 'table' then return end");
             strBuilder.Append(compsRenderBuilder);
             strBuilder.AppendLine("end");
             strBuilder.AppendLine();
@@ -237,16 +244,23 @@ namespace Framework.LuaMVC.Editor
             return true;
         }
 
-        private static string GetFacadeTblName(LuaViewFacade facade)
+        private static string GetFacadeTblName(LuaViewFacade facade, out List<string> viewTblPath)
         {
+            viewTblPath = new List<string>();
+
             Stack<string> stack = new Stack<string>();
             stack.Push(facade.viewName);
+            viewTblPath.Add(facade.viewName);
 
             Transform node = facade.transform.parent;
             while (node != null)
             {
                 LuaViewFacade pFacade = node.GetComponent<LuaViewFacade>();
-                if (pFacade != null) stack.Push(pFacade.viewName);
+                if (pFacade != null)
+                {
+                    stack.Push(pFacade.viewName);
+                    viewTblPath.Insert(0, pFacade.viewName);
+                }
                 node = node.parent;
             }
             return string.Join('.', stack);
@@ -272,7 +286,7 @@ namespace Framework.LuaMVC.Editor
                         renderBuilder.Append("\t").AppendLine("end");
                         break;
                     case "LuaViewFacade":
-                        initBuilder.Append("\t").AppendFormat("self.{0} = {1}.{2}.Create(self.view_xxx)", comp.name, facade.viewName, ((LuaViewFacade)comp.target).viewName).AppendLine();
+                        initBuilder.Append("\t").AppendFormat("self.{0} = {1}.{2}.Create(self.{0})", comp.name, facade.viewName, ((LuaViewFacade)comp.target).viewName).AppendLine();
                         renderBuilder.Append("\t").AppendFormat("if viewModel.{0} ~= nil then", comp.name).AppendLine();
                         renderBuilder.Append("\t\t").AppendFormat("self.{0}:Render(viewModel.{0})", comp.name).AppendLine();
                         renderBuilder.Append("\t").AppendLine("end");
@@ -372,7 +386,12 @@ namespace Framework.LuaMVC.Editor
                         renderBuilder.Append("\t\t\t\t").AppendFormat("self.__{0}_POOL[i].gameObject:SetActive(false)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t").AppendLine("end");
                         renderBuilder.Append("\t\t\t").AppendFormat("for i=minLen+1,#viewModel.{0}.items do", comp.name).AppendLine();
-                        renderBuilder.Append("\t\t\t\t").AppendFormat("local ITEM_VIEW = require('MVC.View.'..self.{0}_ItemTemplate.viewName)", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t\t\t").AppendFormat("local ITEM_VIEW = require('MVC.View.'..self.{0}_ItemTemplate.viewTblPath[1])", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t\t\t").AppendFormat("if #self.{0}_ItemTemplate.viewTblPath > 1 then", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t\t\t\t").AppendFormat("for j=2, #self.{0}_ItemTemplate.viewTblPath do", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t\t\t\t\t").AppendFormat("ITEM_VIEW = ITEM_VIEW[self.{0}_ItemTemplate.viewTblPath[j]]", comp.name).AppendLine();
+                        renderBuilder.Append("\t\t\t\t\t").AppendLine("end");
+                        renderBuilder.Append("\t\t\t\t").AppendLine("end");
                         renderBuilder.Append("\t\t\t\t").AppendFormat("local itemViewGO = GameObject.Instantiate(self.{0}_ItemTemplate.gameObject, Vector3.zero, Quaternion.identity, self.{0}.transform)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendFormat("local itemView = ITEM_VIEW.Create(itemViewGO:GetComponent('LuaViewFacade'), self.{0}_ItemTemplate)", comp.name).AppendLine();
                         renderBuilder.Append("\t\t\t\t").AppendFormat("table.insert(self.__{0}_POOL, itemView)", comp.name).AppendLine();

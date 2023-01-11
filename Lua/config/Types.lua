@@ -34,7 +34,7 @@ local enums =
      ---@field public GEqual integer
      ---@field public Less integer
      ---@field public LEqual integer
-    ['gp.E_ValueCompare'] = {   Equal=1,  NEqual=2,  Greater=3,  GEqual=4,  Less=5,  LEqual=6,  };
+    ['gp.E_ValueCompare'] = {   Equal=0,  NEqual=1,  Greater=2,  GEqual=3,  Less=4,  LEqual=5,  };
     ---@class gp.E_Element
      ---@field public None integer
      ---@field public Fire integer
@@ -73,7 +73,12 @@ local enums =
      ---@field public Self integer
      ---@field public AttrLowest integer
      ---@field public AttrHighest integer
-    ['gp.E_TS_Method'] = {   None=1,  Random=2,  Nearest=3,  Farest=4,  Match=5,  All=6,  Self=7,  AttrLowest=8,  AttrHighest=9,  };
+    ['gp.E_TS_Method'] = {   None=0,  Random=1,  Nearest=2,  Farest=3,  Match=4,  All=5,  Self=6,  AttrLowest=7,  AttrHighest=8,  };
+    ---@class gp.E_ADV_EVT_TYPE
+     ---@field public Chest integer
+     ---@field public Battle integer
+     ---@field public Dialog integer
+    ['gp.E_ADV_EVT_TYPE'] = {   Chest=0,  Battle=1,  Dialog=2,  };
 }
 
 
@@ -297,11 +302,98 @@ local function InitTypes(methods)
         end
         beans[class['_type_']] = class
     end
+    do
+    ---@class gp.AdvantureSlot 
+     ---@field public id integer
+     ---@field public weight integer
+     ---@field public elements integer[]
+     ---@field public evtType integer
+     ---@field public evtBody gp.B_ADV_EVT
+        local class = SimpleClass()
+        class._id = 643347533
+        class['_type_'] = 'gp.AdvantureSlot'
+        local id2name = {  }
+        class._deserialize = function(bs)
+            local o = {
+            id = readInt(bs),
+            weight = readInt(bs),
+            elements = readList(bs, readInt),
+            evtType = readInt(bs),
+            evtBody = beans['gp.B_ADV_EVT']._deserialize(bs),
+            }
+            setmetatable(o, class)
+            return o
+        end
+        beans[class['_type_']] = class
+    end
+    do
+    ---@class gp.B_ADV_EVT 
+        local class = SimpleClass()
+        class._id = -816509355
+        class['_type_'] = 'gp.B_ADV_EVT'
+        local id2name = {  [154307703] = 'gp.B_ADV_EVT_CHEST',  [453925346] = 'gp.B_ADV_EVT_BATTLE',  [517998194] = 'gp.B_ADV_EVT_DIALOG',  }
+        class._deserialize = function(bs)
+            local id = readInt(bs)
+            return beans[id2name[id]]._deserialize(bs)
+        end
+        beans[class['_type_']] = class
+    end
+    do
+    ---@class gp.B_ADV_EVT_CHEST :gp.B_ADV_EVT 
+     ---@field public chestModel string
+     ---@field public coin integer
+        local class = SimpleClass()
+        class._id = 154307703
+        class['_type_'] = 'gp.B_ADV_EVT_CHEST'
+        local id2name = {  }
+        class._deserialize = function(bs)
+            local o = {
+            chestModel = readString(bs),
+            coin = readInt(bs),
+            }
+            setmetatable(o, class)
+            return o
+        end
+        beans[class['_type_']] = class
+    end
+    do
+    ---@class gp.B_ADV_EVT_BATTLE :gp.B_ADV_EVT 
+     ---@field public enemies integer[]
+        local class = SimpleClass()
+        class._id = 453925346
+        class['_type_'] = 'gp.B_ADV_EVT_BATTLE'
+        local id2name = {  }
+        class._deserialize = function(bs)
+            local o = {
+            enemies = readList(bs, readInt),
+            }
+            setmetatable(o, class)
+            return o
+        end
+        beans[class['_type_']] = class
+    end
+    do
+    ---@class gp.B_ADV_EVT_DIALOG :gp.B_ADV_EVT 
+     ---@field public dialog string
+        local class = SimpleClass()
+        class._id = 517998194
+        class['_type_'] = 'gp.B_ADV_EVT_DIALOG'
+        local id2name = {  }
+        class._deserialize = function(bs)
+            local o = {
+            dialog = readString(bs),
+            }
+            setmetatable(o, class)
+            return o
+        end
+        beans[class['_type_']] = class
+    end
 
     local tables =
     {
     { name='TblActor', file='gp_tblactor', mode='map', index='id', value_type='gp.Actor' },
     { name='TblSkill', file='gp_tblskill', mode='map', index='id', value_type='gp.Skill' },
+    { name='TblAdvantureSlot', file='gp_tbladvantureslot', mode='map', index='id', value_type='gp.AdvantureSlot' },
     }
     return { enums = enums, beans = beans, tables = tables }
     end

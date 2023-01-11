@@ -23,7 +23,7 @@ end
 function BattleStateExitRound:OnUpdate(deltaTime)
     if not self.allLogicDone then
         if self.waitingForActionDone then -- 等待buff产生的action执行完毕
-            if TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
+            if CommonUtils.TestEverybodyInList(battleInst.advanture.actors, CheckActorState_IDLE_or_DEAD, nil, 1) then
                 self.waitingForActionDone = false -- action执行完毕，继续buff逻辑遍历
                 return
             end

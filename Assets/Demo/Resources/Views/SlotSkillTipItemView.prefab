@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 6199156041889203199}
   - component: {fileID: 2105009780}
   m_Layer: 5
-  m_Name: ItemView_SlotSkillTip
+  m_Name: SlotSkillTipItemView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
